@@ -1,0 +1,881 @@
+﻿<UserControl
+    x:Class="WPFMachine.Views.AnimatedInterface"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:addit="clr-namespace:WPFMachine.Views.AdditionalAttribute"
+    xmlns:control="clr-namespace:WPFMachine.Views.Control"
+    xmlns:custompanel="clr-namespace:WPFMachine.Views.Control.CustomPanel"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dataStructure="clr-namespace:WPFMachine.Frame.DataStructure"
+    xmlns:local="clr-namespace:WPFMachine.Views"
+    xmlns:machine="clr-namespace:Machine"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:user="clr-namespace:WPFMachine.Frame.Userlib"
+    xmlns:viewmodule="clr-namespace:WPFMachine.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewmodule:AnimatedInterfaceViewModel}"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <local:SchedulingAnimationTransition x:Key="t" />
+    </UserControl.Resources>
+    <Viewbox Stretch="Fill">
+        <Grid Margin="0,0,5,2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <!--  上料数量  -->
+            <Border
+                x:Name="countBorder"
+                Width="40"
+                Height="520"
+                BorderBrush="{DynamicResource BorderColor}"
+                BorderThickness="2"
+                CornerRadius="8,0,0,8">
+                <Border.RenderTransform>
+                    <TranslateTransform X="0" Y="0" />
+                </Border.RenderTransform>
+                <StackPanel>
+                    <WrapPanel
+                        x:Name="WrapPanelLab"
+                        Width="40"
+                        Height="150"
+                        Background="{DynamicResource BorderColor}"
+                        DockPanel.Dock="Left"
+                        Orientation="Horizontal">
+                        <ToggleButton
+                            x:Name="togglebut"
+                            Width="30"
+                            Height="40"
+                            IsChecked="True">
+                            <ToggleButton.Triggers>
+                                <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                BeginTime="0:0:0"
+                                                Storyboard.TargetName="countBorder"
+                                                Storyboard.TargetProperty="Width"
+                                                From="40"
+                                                To="200"
+                                                Duration="0:0:0.2" />
+                                            <DoubleAnimation
+                                                BeginTime="0:0:0"
+                                                Storyboard.TargetName="WrapPanelLab"
+                                                Storyboard.TargetProperty="Width"
+                                                From="40"
+                                                To="200"
+                                                Duration="0:0:0.2" />
+                                            <DoubleAnimation
+                                                BeginTime="0:0:0"
+                                                Storyboard.TargetName="WrapPanelLab"
+                                                Storyboard.TargetProperty="Height"
+                                                From="150"
+                                                To="40"
+                                                Duration="0:0:0.2" />
+                                            <DoubleAnimation
+                                                BeginTime="0:0:0"
+                                                Storyboard.TargetName="countBorder"
+                                                Storyboard.TargetProperty="Height"
+                                                From="500"
+                                                To="520"
+                                                Duration="0:0:0.2" />
+                                            <DoubleAnimation
+                                                BeginTime="0:0:0"
+                                                Storyboard.TargetName="textx"
+                                                Storyboard.TargetProperty="Height"
+                                                From="150"
+                                                To="30"
+                                                Duration="0:0:0.2" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                BeginTime="0:0:0"
+                                                Storyboard.TargetName="countBorder"
+                                                Storyboard.TargetProperty="Width"
+                                                From="200"
+                                                To="40"
+                                                Duration="0:0:0.2" />
+                                            <DoubleAnimation
+                                                BeginTime="0:0:0"
+                                                Storyboard.TargetName="WrapPanelLab"
+                                                Storyboard.TargetProperty="Width"
+                                                From="200"
+                                                To="40"
+                                                Duration="0:0:0.2" />
+                                            <DoubleAnimation
+                                                BeginTime="0:0:0"
+                                                Storyboard.TargetName="WrapPanelLab"
+                                                Storyboard.TargetProperty="Height"
+                                                From="40"
+                                                To="150"
+                                                Duration="0:0:0.2" />
+
+                                            <DoubleAnimation
+                                                BeginTime="0:0:0"
+                                                Storyboard.TargetName="countBorder"
+                                                Storyboard.TargetProperty="Height"
+                                                From="520"
+                                                To="500"
+                                                Duration="0:0:0.2" />
+                                            <DoubleAnimation
+                                                BeginTime="0:0:0"
+                                                Storyboard.TargetName="textx"
+                                                Storyboard.TargetProperty="Height"
+                                                From="30"
+                                                To="150"
+                                                Duration="0:0:0.2" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </ToggleButton.Triggers>
+                        </ToggleButton>
+                        <TextBlock
+                            x:Name="textx"
+                            Height="150"
+                            Margin="4,1,1,1"
+                            Padding="5"
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            Foreground="White"
+                            Text="生产数据"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+
+
+                    </WrapPanel>
+                    <ListBox
+                        Name="listBoxCount"
+                        Height="460"
+                        ItemsSource="{Binding ListBoxCountShow}">
+
+                        <ListBox.Resources>
+                            <Style BasedOn="{StaticResource ScrollStyle_Mobile}" TargetType="ScrollBar" />
+                        </ListBox.Resources>
+                        <ListBox.ContextMenu>
+                            <ContextMenu Style="{StaticResource ContextMenuStyle}">
+                                <MenuItem
+                                    user:UserHelp.Name="动画界面-清除数据"
+                                    Command="{Binding handClearProuductDataCommand}"
+                                    Header="清除数据" />
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="5,0,0,0" Orientation="Horizontal">
+                                    <Border
+                                        Width="10"
+                                        Height="10"
+                                        Background="{Binding ColorBrush}"
+                                        CornerRadius="10" />
+                                    <TextBlock
+                                        x:Name="textBoxName"
+                                        Height="15"
+                                        Margin="5,0,0,0"
+                                        HorizontalAlignment="Center"
+                                        FontSize="12"
+                                        Text="{Binding Name}"
+                                        TextAlignment="Center" />
+                                    <TextBlock
+                                        Height="15"
+                                        Margin="2,0,0,0"
+                                        FontSize="12"
+                                        Text="{Binding ProductData}"
+                                        TextAlignment="Center" />
+                                </StackPanel>
+
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+
+            </Border>
+
+
+            <Border
+                Grid.Column="1"
+                Margin="5,0,5,2"
+                BorderBrush="{DynamicResource PrimaryBlueColor}"
+                BorderThickness="2"
+                CornerRadius="0,8,8,0">
+                <Grid
+                    x:Name="Animated"
+                    Width="1000"
+                    Height="500"
+                    Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="0.5*" />
+                        <RowDefinition Height="0.5*" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <!--  上半部分  -->
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="0.2*" />
+                            <ColumnDefinition Width="4*" />
+                            <ColumnDefinition Width="0.5*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!--  颜色参照  -->
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.8*" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width=" 1.8*" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <ItemsControl
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Grid.Column="0"
+                                ItemsSource="{Binding InfoShow}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Columns="1" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.Resources>
+                                    <DataTemplate DataType="{x:Type viewmodule:ShowBatInfo}">
+                                        <Viewbox>
+                                            <StackPanel
+                                                Height="15"
+                                                Margin="0,-6,0,-6"
+                                                Orientation="Horizontal">
+                                                <Border
+                                                    Width="20"
+                                                    Height="10"
+                                                    Style="{DynamicResource BatteryStyle}" />
+                                                <TextBlock
+                                                    Width="60"
+                                                    Margin="5,0"
+                                                    FontSize="10"
+                                                    Text="{Binding Name}" />
+                                            </StackPanel>
+                                        </Viewbox>
+
+                                    </DataTemplate>
+                                    <DataTemplate DataType="{x:Type viewmodule:ShowCavityInfo}">
+                                        <Viewbox>
+                                            <StackPanel
+                                                Height="15"
+                                                Margin="0,-6,0,-6"
+                                                Orientation="Horizontal">
+                                                <Viewbox Width="20" Height="20">
+                                                    <Grid Width="50" Height="35">
+                                                        <control:CavityColorView MaxRow="{Binding Col}" Plts="{Binding Plts}" />
+                                                    </Grid>
+                                                </Viewbox>
+
+                                                <TextBlock
+                                                    Width="60"
+                                                    Margin="5,3,0,-3"
+                                                    FontSize="10"
+                                                    Text="{Binding Name}" />
+                                            </StackPanel>
+                                        </Viewbox>
+
+                                    </DataTemplate>
+                                </ItemsControl.Resources>
+                            </ItemsControl>
+                        </Grid>
+
+
+                        <!--  冷却架  -->
+                        <Border
+                            Grid.Column="1"
+                            Margin="-50,0,0,0"
+                            BorderBrush="Gray"
+                            BorderThickness="1"
+                            CornerRadius="5">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Label
+                                    Grid.Row="1"
+                                    HorizontalAlignment="Center"
+                                    VerticalContentAlignment="Bottom"
+                                    Content="【冷却炉】" />
+                                <control:CollectionPallet
+                                    x:Name="RunProCoolingStove"
+                                    Grid.Row="1"
+                                    Width="80"
+                                    Margin="1.5,5,5,35"
+                                    addit:DispatchLocationHelper.Dispatch="11,.*,.*,1"
+                                    MaxCol="1"
+                                    MaxRow="{Binding RunProCoolingStove.Pallet.Length}"
+                                    PltEnables="{Binding RunProCoolingStove.BBufEnable, Converter={x:Static local:ListReverseConverter.Instance}}"
+                                    Plts="{Binding RunProCoolingStove.Pallet, Converter={x:Static local:ListReverseConverter.Instance}}"
+                                    SelectPath="PltPos" />
+                                <!--<control:BatterysView Grid.Row="0" Bats="{Binding ElementName=RunProManualOperatView, Path=SelectValue.Bats}" />-->
+                                <!--  Text="{Binding ., StringFormat={}{0}}"  -->
+                                <ListBox
+                                    Grid.Row="1"
+                                    ItemsSource="{Binding RunProCoolingStove.CoolingTime}"
+                                    ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock
+                                                x:Name="textBoxName"
+                                                Height="15"
+                                                Margin="5,0,0,0"
+                                                HorizontalAlignment="Center"
+                                                FontSize="12"
+                                                Text="{Binding ., StringFormat={}{0}}"
+                                                TextAlignment="Center" />
+
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </Grid>
+                        </Border>
+
+                        <!--  上干燥炉  -->
+                        <Border
+                            Grid.Column="2"
+                            Grid.ColumnSpan="2"
+                            Margin="5,0,0,0"
+                            BorderBrush="Gray"
+                            BorderThickness="1"
+                            CornerRadius="5">
+                            <ItemsControl ItemsSource="{Binding RunProDryingOvens0}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Rows="1" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <control:OvenView
+                                            Margin="10,15,10,5"
+                                            addit:DispatchLocationHelper.Dispatch="{Binding TransferIndex}"
+                                            MaxCavityCol="1"
+                                            MaxCavityRow="6"
+                                            MaxCol="2"
+                                            MaxRow="2" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                        </Border>
+
+
+                    </Grid>
+                    <!--  通讯显示和运行工位  -->
+                    <Grid Grid.Row="1" Margin="5,5,2,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0*" />
+                            <ColumnDefinition Width="10*" />
+                            <ColumnDefinition Width="9*" />
+                        </Grid.ColumnDefinitions>
+                        <!--  运行工位  -->
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                FontSize="14"
+                                Foreground="Green"
+                                Text="运行工位：" />
+                            <StackPanel
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Orientation="Horizontal">
+                                <TextBlock Text="上料机器人：" />
+                                <TextBlock Foreground="#12b25e" Text="{Binding RunProOnloadRobot.RunMsg}" />
+                            </StackPanel>
+                            <StackPanel
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Orientation="Horizontal">
+                                <TextBlock Text="调度机器人：" />
+                                <TextBlock Foreground="#12b25e" Text="{Binding RunProTransferRobot.RunMsg}" />
+                            </StackPanel>
+                            <StackPanel
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Orientation="Horizontal">
+                                <TextBlock Text="下料机器人：" />
+                                <TextBlock Foreground="#12b25e" Text="{Binding RunProOffloadRobot.RunMsg}" />
+                            </StackPanel>
+                        </Grid>
+                        <!--  通讯显示  -->
+                        <Grid Grid.Column="4">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                FontSize="14"
+                                Foreground="Green"
+                                Text="通讯显示：" />
+                            <StackPanel
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" Text="上料机器人：" />
+                                <Rectangle
+                                    Width="12"
+                                    Height="12"
+                                    Fill="{Binding Path=RunProOnloadRobot.ConnectState, Converter={StaticResource BrushColor}}" />
+                            </StackPanel>
+                            <StackPanel
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" Text="调度机器人：" />
+                                <Rectangle
+                                    Width="12"
+                                    Height="12"
+                                    Fill="{Binding Path=RunProTransferRobot.ConnectState, Converter={StaticResource BrushColor}}" />
+                            </StackPanel>
+                            <StackPanel
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" Text="下料机器人：" />
+                                <Rectangle
+                                    Width="12"
+                                    Height="12"
+                                    Fill="{Binding Path=RunProOffloadRobot.ConnectState, Converter={StaticResource BrushColor}}" />
+                            </StackPanel>
+                            <StackPanel
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" Text="来料扫码1：" />
+                                <Rectangle
+                                    Width="12"
+                                    Height="12"
+                                    Fill="{Binding Path=RunProOnloadLineScans.ConnectState1, Converter={StaticResource BrushColor}}" />
+                            </StackPanel>
+                            <StackPanel
+                                Grid.Row="2"
+                                Grid.Column="2"
+                                Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" Text="来料扫码2：" />
+                                <Rectangle
+                                    Width="12"
+                                    Height="12"
+                                    Fill="{Binding Path=RunProOnloadLineScans.ConnectState2, Converter={StaticResource BrushColor}}" />
+                            </StackPanel>
+                            <StackPanel
+                                Grid.Row="3"
+                                Grid.Column="2"
+                                Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" Text="来料扫码3：" />
+                                <Rectangle
+                                    Width="12"
+                                    Height="12"
+                                    Fill="{Binding Path=RunProOnloadLineScans.ConnectState3, Converter={StaticResource BrushColor}}" />
+                            </StackPanel>
+                            <StackPanel
+                                Grid.Row="1"
+                                Grid.Column="3"
+                                Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" Text="来料扫码4：" />
+                                <Rectangle
+                                    Width="12"
+                                    Height="12"
+                                    Fill="{Binding Path=RunProOnloadLineScans.ConnectState4, Converter={StaticResource BrushColor}}" />
+                            </StackPanel>
+                            <StackPanel
+                                Grid.Row="2"
+                                Grid.Column="3"
+                                Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" Text="机器人扫码枪：" />
+                                <Rectangle
+                                    Width="12"
+                                    Height="12"
+                                    Fill="{Binding Path=RunProOnloadRobot.ScanconnectState, Converter={StaticResource BrushColor}}" />
+                            </StackPanel>
+                            <StackPanel
+                                Grid.Row="1"
+                                Grid.Column="4"
+                                Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" Text="MES状态：" />
+                                <Rectangle
+                                    Width="12"
+                                    Height="12"
+                                    Fill="{Binding Path=MachineCtrl.IsMESConnect, Converter={StaticResource BrushColor}}" />
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                    <!--  Fill="{Binding Source={x:Static machine:MachineCtrl.MachineCtrlInstance}, Path=IsMESConnect, Converter={StaticResource BrushColor}}" />  -->
+                    <!--  调度区域  -->
+                    <Border
+                        Grid.Row="2"
+                        Margin="1,2,1,2"
+                        BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                        BorderThickness="1">
+                        <Border>
+                            <StackPanel
+                                Grid.Row="2"
+                                Margin="50,0,0,0"
+                                Orientation="Horizontal">
+                                <Path
+                                    Name="ico"
+                                    Grid.Column="0"
+                                    Width="50"
+                                    Height="50"
+                                    Margin="-50,0,0,0"
+                                    Data="{StaticResource tranRobot}"
+                                    Fill="Red"
+                                    Stretch="Uniform" />
+                                <control:RobotPalletView
+                                    MinWidth="80"
+                                    addit:DispatchLocationHelper.Dispatch="this,,,1"
+                                    MaxRow="1"
+                                    Plts="{Binding RunProTransferRobot.Pallet}"
+                                    SelectPath="PltPos" />
+                            </StackPanel>
+                            <Border.Margin>
+                                <MultiBinding Converter="{StaticResource t}">
+                                    <Binding Path="RunProTransferRobot.robotAutoInfo.Station" />
+                                    <Binding Path="RunProTransferRobot.robotAutoInfo.Row" />
+                                    <Binding Path="RunProTransferRobot.robotAutoInfo.Col" />
+                                </MultiBinding>
+                            </Border.Margin>
+                        </Border>
+
+                    </Border>
+
+                    <!--  下半部分  -->
+                    <Grid Grid.Row="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2.5*" />
+                            <ColumnDefinition Width="0.7*" />
+                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="2.8*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!--  下料区域  -->
+                        <Border
+                            Grid.Column="0"
+                            Padding="5"
+                            BorderBrush="{DynamicResource PrimaryHueLightBrush}"
+                            BorderThickness="2"
+                            CornerRadius="5">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="5*" />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+
+                                    <control:BatterysView
+                                        Title="{Binding RunProOffloadRobot.RunName}"
+                                        Grid.Row="1"
+                                        Grid.RowSpan="3"
+                                        Grid.Column="1"
+                                        Margin="-1,1,5,1"
+                                        A="Vertical"
+                                        Bats="{Binding RunProOffloadRobot.Bat}"
+                                        MaxCol="{Binding RunProOffloadRobot.MaxCol}"
+                                        MaxRow="{Binding RunProOffloadRobot.MaxRow}"
+                                        TitleHeight="4.5*" />
+
+                                    <control:BatterysView
+                                        Title="{Binding RunProOffloadBuffer.RunName}"
+                                        Grid.Row="0"
+                                        Grid.RowSpan="3"
+                                        Grid.Column="2"
+                                        Margin="15,0,-5,0"
+                                        A="Vertical"
+                                        Bats="{Binding RunProOffloadBuffer.Bat}"
+                                        MaxCol="{Binding RunProOffloadBuffer.MaxCol}"
+                                        MaxRow="{Binding RunProOffloadBuffer.MaxRow}"
+                                        TitleHeight="3*" />
+
+                                    <control:BatterysView
+                                        Title="{Binding RunProOffloadLine.RunName}"
+                                        Grid.Row="1"
+                                        Grid.RowSpan="3"
+                                        Grid.Column="0"
+                                        Margin="-1,1,5,1"
+                                        A="Vertical"
+                                        Bats="{Binding RunProOffloadLine.Bat}"
+                                        MaxCol="{Binding RunProOffloadLine.MaxCol}"
+                                        MaxRow="{Binding RunProOffloadLine.MaxRow}"
+                                        TitleHeight="4.5*" />
+
+                                </Grid>
+
+                                <control:RobotPalletView
+                                    x:Name="OffloadRobot"
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Grid.Column="2"
+                                    Grid.ColumnSpan="3"
+                                    Margin="3,-2,-7,2"
+                                    addit:DispatchLocationHelper.Dispatch="9,.*,.*,2"
+                                    MaxCol="{Binding RunProOffloadRobot.Pallet.Length}"
+                                    MaxRow="{Binding RunProOffloadRobot.MaxRow}"
+                                    Plts="{Binding RunProOffloadRobot.Pallet}"
+                                    PressureVisi="Hidden"
+                                    SelectPath="PltPos" />
+
+
+                                <control:BatterysView
+                                    Title="{Binding RunProOffloadFake.RunName}"
+                                    Grid.Row="3"
+                                    Grid.RowSpan="3"
+                                    Grid.Column="1"
+                                    Bats="{Binding RunProOffloadFake.Bat}"
+                                    MaxCol="{Binding RunProOffloadFake.MaxCol}"
+                                    MaxRow="{Binding RunProOffloadFake.MaxRow}"
+                                    TitleHeight="3*" />
+                            </Grid>
+                        </Border>
+
+                        <!--  人工操作台  -->
+                        <Border
+                            Grid.Column="1"
+                            BorderBrush="{DynamicResource PrimaryHueLightBrush}"
+                            BorderThickness="2"
+                            CornerRadius="5">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="3*" />
+                                    <RowDefinition Height="9*" />
+                                    <RowDefinition Height="3*" />
+                                    <RowDefinition Height="4*" />
+                                </Grid.RowDefinitions>
+                                <Label
+                                    Grid.Row="0"
+                                    HorizontalAlignment="Center"
+                                    Content="缓存架" />
+                                <control:CollectionPallet
+                                    x:Name="RunProPalletBufView"
+                                    Grid.Row="1"
+                                    Width="80"
+                                    Margin="-4,4,5,5"
+                                    addit:DispatchLocationHelper.Dispatch="7,.*,.*,1"
+                                    MaxCol="1"
+                                    MaxRow="{Binding RunProPalletBuf.Pallet.Length}"
+                                    PltEnables="{Binding RunProPalletBuf.BBufEnable, Converter={x:Static local:ListReverseConverter.Instance}}"
+                                    Plts="{Binding RunProPalletBuf.Pallet, Converter={x:Static local:ListReverseConverter.Instance}}"
+                                    SelectPath="PltPos" />
+
+                                <Label
+                                    Grid.Row="2"
+                                    HorizontalAlignment="Center"
+                                    VerticalContentAlignment="Bottom"
+                                    Content="人工操作台"
+                                    FontSize="9" />
+
+                                <control:CollectionPallet
+                                    x:Name="RunProManualOperatView"
+                                    Grid.Row="3"
+                                    Width="80"
+                                    Height="20"
+                                    Margin="-4,5,5,5"
+                                    MaxCol="1"
+                                    MaxRow="{Binding RunProManualOperat.Pallet.Length}"
+                                    PltEnables="{Binding RunProManualOperat.BOperatEnable}"
+                                    Plts="{Binding RunProManualOperat.Pallet}"
+                                    SelectPath="PltPos" />
+                                <!--<control:BatterysView Grid.Row="0" Bats="{Binding ElementName=RunProManualOperatView, Path=SelectValue.Bats}" />-->
+                            </Grid>
+                        </Border>
+
+                        <!--  干燥炉部分  -->
+                        <Border
+                            Grid.Column="2"
+                            BorderBrush="{DynamicResource PrimaryHueLightBrush}"
+                            BorderThickness="2"
+                            CornerRadius="5">
+                            <ItemsControl ItemsSource="{Binding RunProDryingOvens1}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Rows="1" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <control:OvenView
+                                            Margin="10,15,10,5"
+                                            addit:DispatchLocationHelper.Dispatch="{Binding TransferIndex}"
+                                            MaxCavityCol="1"
+                                            MaxCavityRow="6"
+                                            MaxCol="2"
+                                            MaxRow="2" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                        </Border>
+
+                        <!--  上料区域  -->
+                        <Border
+                            Grid.Column="3"
+                            BorderBrush="{DynamicResource PrimaryHueLightBrush}"
+                            BorderThickness="2"
+                            CornerRadius="5">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="5*" />
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="1*" />
+                                </Grid.RowDefinitions>
+
+
+                                <control:RobotPalletView
+                                    x:Name="OnloadRobot1"
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="4"
+                                    Margin="3,3,15,3"
+                                    addit:DispatchLocationHelper.Dispatch="8,.*,.*,3"
+                                    MaxCol="{Binding RunProOnloadRobot.Pallet.Length}"
+                                    MaxRow="{Binding RunProOnloadRobot.MaxCol}"
+                                    Plts="{Binding RunProOnloadRobot.Pallet}"
+                                    SelectPath="PltPos" />
+
+                                <control:BatterysView
+                                    Title="{Binding RunProOnloadFake.RunName}"
+                                    Grid.Row="3"
+                                    Grid.RowSpan="4"
+                                    Grid.Column="2"
+                                    Bats="{Binding RunProOnloadFake.Bat}"
+                                    IsReversal="False"
+                                    MaxCol="{Binding RunProOnloadFake.MaxCol}"
+                                    MaxRow="{Binding RunProOnloadFake.MaxRow}"
+                                    TitleHeight="10*" />
+
+                                <control:BatterysView
+                                    Title="{Binding RunProOnloadNG.RunName}"
+                                    Grid.Row="3"
+                                    Grid.RowSpan="3"
+                                    Grid.Column="1"
+                                    Bats="{Binding RunProOnloadNG.Bat}"
+                                    MaxCol="{Binding RunProOnloadNG.MaxCol}"
+                                    MaxRow="{Binding RunProOnloadNG.MaxRow}"
+                                    TitleHeight="10*" />
+
+                                <control:BatterysView
+                                    Title="{Binding RunProOnloadBuffer.RunName}"
+                                    Grid.Row="2"
+                                    Grid.RowSpan="2"
+                                    Grid.Column="0"
+                                    Margin="20,-10,-10,20"
+                                    Bats="{Binding RunProOnloadBuffer.Bat}"
+                                    MaxCol="{Binding RunProOnloadBuffer.MaxCol}"
+                                    MaxRow="{Binding RunProOnloadBuffer.MaxRow}"
+                                    TitleHeight="4*" />
+
+                                <!--  来料扫码  -->
+                                <control:BatterysView
+                                    Title="{Binding RunProOnloadLineScans.RunName}"
+                                    Grid.Row="2"
+                                    Grid.RowSpan="3"
+                                    Grid.Column="4"
+                                    Margin="30,0,2,0"
+                                    A="Vertical"
+                                    Bats="{Binding RunProOnloadLineScans.Bat}"
+                                    MaxCol="{Binding RunProOnloadLineScans.MaxCol}"
+                                    MaxRow="{Binding RunProOnloadLineScans.MaxRow}"
+                                    TitleHeight="2.2*" />
+                                <!--  来料线  -->
+                                <control:BatterysView
+                                    Title="{Binding RunProOnloadLines.RunName}"
+                                    Grid.Row="2"
+                                    Grid.RowSpan="3"
+                                    Grid.Column="3"
+                                    Margin="55,0,-25,0"
+                                    A="Vertical"
+                                    Bats="{Binding RunProOnloadLines.Bat}"
+                                    MaxCol="{Binding RunProOnloadLines.MaxCol}"
+                                    MaxRow="{Binding RunProOnloadLines.MaxRow}"
+                                    TitleHeight="2.2*" />
+                                <!--  上料机器人  -->
+                                <control:BatterysView
+                                    Title="{Binding RunProOnloadRobot.RunName}"
+                                    Grid.Row="2"
+                                    Grid.RowSpan="3"
+                                    Grid.Column="2"
+                                    Margin="80,0,-50,0"
+                                    A="Horizontal"
+                                    Bats="{Binding RunProOnloadRobot.Bat}"
+                                    MaxCol="{Binding RunProOnloadRobot.MaxCol}"
+                                    MaxRow="{Binding RunProOnloadRobot.MaxRow}"
+                                    TitleHeight="3*" />
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                </Grid>
+            </Border>
+
+
+        </Grid>
+    </Viewbox>
+</UserControl>

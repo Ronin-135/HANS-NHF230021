@@ -1,0 +1,182 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:move="clr-namespace:HelperLibraryWPF.Move;assembly=HelperLibraryWPF"
+    xmlns:prism="http://prismlibrary.com/">
+    <Style x:Key="MsgStyle" TargetType="UserControl">
+        <Setter Property="prism:Dialog.WindowStyle">
+            <Setter.Value>
+                <Style TargetType="Window">
+                    <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterScreen" />
+                    <Setter Property="ResizeMode" Value="NoResize" />
+                    <Setter Property="ShowInTaskbar" Value="False" />
+                    <Setter Property="SizeToContent" Value="WidthAndHeight" />
+                    <Setter Property="WindowStyle" Value="None" />
+                    <Setter Property="OpacityMask" Value="White" />
+                    <Setter Property="AllowsTransparency" Value="True" />
+                    <Setter Property="Background" Value="Transparent" />
+                </Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="TitleAlarm" TargetType="Label">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding MessageType}" Value="MsgMessage">
+                <Setter Property="Content" Value="消息" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding MessageType}" Value="MsgQuestion">
+                <Setter Property="Content" Value="提示" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding MessageType}" Value="MsgWarning">
+                <Setter Property="Content" Value="警告" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding MessageType}" Value="MsgAlarm">
+                <Setter Property="Content" Value="报警" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="RoundButton" TargetType="Button">
+        <Setter Property="FontSize" Value="25" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Background" Value="{DynamicResource PrimaryBlueColor}" />
+
+        <Setter Property="Width" Value="100" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="10">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsPressed" Value="true">
+                <Setter Property="Opacity" Value="0.5" />
+            </Trigger>
+            <!--<Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="Red" />
+            </Trigger>-->
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="PopUpAlarm" TargetType="Border">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding MessageType}" Value="MsgMessage">
+                <Setter Property="Background" Value="Gray" />
+
+            </DataTrigger>
+            <DataTrigger Binding="{Binding MessageType}" Value="MsgQuestion">
+                <Setter Property="Background" Value="Teal" />
+
+            </DataTrigger>
+            <DataTrigger Binding="{Binding MessageType}" Value="MsgWarning">
+                <Setter Property="Background" Value="Yellow" />
+
+            </DataTrigger>
+            <DataTrigger Binding="{Binding MessageType}" Value="MsgAlarm">
+                <Setter Property="Background" Value="Red" />
+
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Grid x:Key="MsgContent" x:Shared="False">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="5*" />
+            <RowDefinition Height="2*" />
+        </Grid.RowDefinitions>
+
+        <Border
+            Grid.Row="0"
+            move:MoveHelp.DragControl="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+            CornerRadius="10, 10, 0, 0"
+            Style="{StaticResource PopUpAlarm}">
+            <!--  最小化注释  -->
+            <!--<Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Button
+                    Padding="0,0,0,30"
+                    HorizontalAlignment="Right"
+                    Command="{Binding MinWindowCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                    Content="{DynamicResource minimize}"
+                    Style="{DynamicResource IconButtonsStyle}" />
+                <Label
+                    Grid.Row="1"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    FontSize="48"
+                    Foreground="White"
+                    Opacity="1"
+                    Style="{StaticResource TitleAlarm}" />
+
+
+            </Grid>-->
+            <Label
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                FontSize="48"
+                Foreground="White"
+                Opacity="1"
+                Style="{StaticResource TitleAlarm}" />
+
+        </Border>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
+            <Label
+                Padding="10"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Background="#f3f3f3"
+                FontSize="24"
+                Foreground="Gray">
+                <TextBlock
+                    Padding="20,10,20,10"
+                    Text="{Binding MsgValue}"
+                    TextWrapping="Wrap" />
+            </Label>
+        </ScrollViewer>
+
+
+        <Border
+            Grid.Row="2"
+            Background="#f3f3f3"
+            BorderBrush="#f3f3f3"
+            CornerRadius="0,0,10,10">
+
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="0.5*" />
+                </Grid.ColumnDefinitions>
+
+                <ItemsControl Grid.Column="1" ItemsSource="{Binding Controls}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button
+                                Command="{Binding ButAction}"
+                                Content="{Binding Text}"
+                                Style="{StaticResource RoundButton}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </Border>
+
+    </Grid>
+
+
+
+</ResourceDictionary>

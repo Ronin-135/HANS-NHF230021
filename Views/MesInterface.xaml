@@ -1,0 +1,552 @@
+﻿<UserControl
+    x:Class="WPFMachine.Views.MesInterface"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:custompanel="clr-namespace:WPFMachine.Views.Control.CustomPanel"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:WPFMachine.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:module="clr-namespace:WPFMachine.ViewModels"
+    xmlns:pt="http://propertytools.org/wpf"
+    xmlns:sys="clr-namespace:System;assembly=netstandard"
+    xmlns:user="clr-namespace:WPFMachine.Frame.Userlib"
+    d:DataContext="{d:DesignInstance Type=module:MesInterfaceViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid>
+        <materialDesign:Card>
+            <TabControl
+                materialDesign:ColorZoneAssist.Background="{DynamicResource PrimaryHueMidBrush}"
+                materialDesign:ColorZoneAssist.Foreground="White"
+                Style="{StaticResource MaterialDesignFilledTabControl}">
+                <TabItem Header="{DynamicResource 水含量上传}">
+
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <GroupBox Margin="5">
+                            <GroupBox.Header>
+                                <TextBlock Foreground="White" Text="{DynamicResource 水含量上传}" />
+                            </GroupBox.Header>
+                            <custompanel:AutoHeight ColCount="4">
+
+                                <!--<TextBlock
+                                    VerticalAlignment="Center"
+                                    custompanel:AutoHeight.ColSpan="1"
+                                    Text="{DynamicResource 电芯条码}" />
+                                <TextBox
+                                    Height="35"
+                                    Margin="3,3,3,3"
+                                    Padding="10,0,0,0"
+                                    VerticalContentAlignment="Center"
+                                    custompanel:AutoHeight.ColSpan="2"
+                                    Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                                <Button
+                                    Height="35"
+                                    custompanel:AutoHeight.ColSpan="1"
+                                    user:UserHelp.Name="电芯搜索"
+                                    Content="{DynamicResource 搜索}"
+                                    Foreground="White" />-->
+
+                                <Grid custompanel:AutoHeight.ColSpan="5">
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="3*" />
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="3*" />
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="3*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="2"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="{DynamicResource 水含量类型}" />
+                                    <ComboBox
+                                        Name="WaterMode"
+                                        Grid.Row="0"
+                                        Grid.Column="2"
+                                        Grid.ColumnSpan="2"
+                                        Padding="10,0,0,0"
+                                        user:UserHelp.Name="水含量类型"
+                                        ItemsSource="{Binding WaterModes}"
+                                        SelectedIndex="0"
+                                        SelectedValue="{Binding CurWaterMode, Mode=TwoWay}" />
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="{DynamicResource 干燥炉}" />
+                                    <ComboBox
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        HorizontalContentAlignment="Center"
+                                        DisplayMemberPath="RunName"
+                                        ItemsSource="{Binding Runs}"
+                                        SelectedIndex="0"
+                                        SelectedValue="{Binding CurOven, Mode=OneWayToSource}" />
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Grid.Column="2"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="{DynamicResource 炉腔}" />
+                                    <ComboBox
+                                        Grid.Row="1"
+                                        Grid.Column="3"
+                                        HorizontalContentAlignment="Center"
+                                        ItemsSource="{Binding FurnaceChambers}"
+                                        SelectedIndex="0"
+                                        SelectedValue="{Binding CurfurnaceChamber, Mode=OneWayToSource, Converter={StaticResource DataMigration_1}}" />
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Grid.Column="4"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="{DynamicResource 托盘层}" />
+                                    <ComboBox
+                                        Grid.Row="1"
+                                        Grid.Column="5"
+                                        HorizontalContentAlignment="Center"
+                                        ItemsSource="{Binding PltsIndex}"
+                                        SelectedIndex="0"
+                                        SelectedValue="{Binding CurPltIndex, Mode=TwoWay, Converter={StaticResource DataMigration_1}}" />
+
+                                </Grid>
+
+
+                                <DataGrid
+                                    custompanel:AutoHeight.RowSpan="2"
+                                    AutoGenerateColumns="False"
+                                    CanUserAddRows="False"
+                                    ItemsSource="{Binding WateUpTypes}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn
+                                            Width="1*"
+                                            Binding="{Binding WaterValue}"
+                                            Header="{DynamicResource 水含量值}" />
+                                        <DataGridTextColumn
+                                            Width="1*"
+                                            Binding="{Binding BKAIWaterValue}"
+                                            Header="{DynamicResource 阴级}" />
+                                        <DataGridTextColumn
+                                            Width="1*"
+                                            Binding="{Binding BKCUWaterValue}"
+                                            Header="{DynamicResource 阳级}" />
+                                    </DataGrid.Columns>
+                                    <b:Interaction.Behaviors>
+                                        <!--  动态列  -->
+                                        <local:DynamicStateDataGridCol>
+                                            <b:Interaction.Triggers>
+                                                <!--  混合型  -->
+                                                <b:DataTrigger Binding="{Binding CurWaterMode}" Value="混合型">
+                                                    <b:ChangePropertyAction PropertyName="Column">
+                                                        <b:ChangePropertyAction.Value>
+                                                            <x:Array Type="{x:Type DataGridColumn}">
+                                                                <DataGridTextColumn
+                                                                    Width="1*"
+                                                                    Binding="{Binding RowPos}"
+                                                                    CanUserSort="False"
+                                                                    Header="{DynamicResource 托盘层}"
+                                                                    IsReadOnly="True" />
+                                                                <DataGridTextColumn
+                                                                    Width="1*"
+                                                                    Binding="{Binding BKCUWaterValue}"
+                                                                    CanUserSort="False"
+                                                                    Header="{DynamicResource 阳极}" />
+                                                                <DataGridTextColumn
+                                                                    Width="1*"
+                                                                    Binding="{Binding BKAIWaterValue}"
+                                                                    CanUserSort="False"
+                                                                    Header="{DynamicResource 阴极}" />
+                                                                <DataGridTextColumn
+                                                                    Width="1*"
+                                                                    Binding="{Binding BKCUWaterTest}"
+                                                                    CanUserSort="False"
+                                                                    Header="{DynamicResource 阳极测试}" />
+                                                                <DataGridTextColumn
+                                                                    Width="1*"
+                                                                    Binding="{Binding BKAIWaterTest}"
+                                                                    CanUserSort="False"
+                                                                    Header="{DynamicResource 阴极测试}" />
+                                                                <!--<DataGridTextColumn
+                                                                    Width="1*"
+                                                                    Binding="{Binding WaterValue}"
+                                                                    CanUserSort="False"
+                                                                    Header="{DynamicResource 混合型}" />-->
+                                                            </x:Array>
+                                                        </b:ChangePropertyAction.Value>
+
+                                                    </b:ChangePropertyAction>
+                                                </b:DataTrigger>
+                                                <!--  阳极型  -->
+                                                <b:DataTrigger Binding="{Binding CurWaterMode}" Value="阳极">
+                                                    <b:ChangePropertyAction PropertyName="Column">
+                                                        <b:ChangePropertyAction.Value>
+                                                            <x:Array Type="{x:Type DataGridColumn}">
+                                                                <DataGridTextColumn
+                                                                    Width="1*"
+                                                                    Binding="{Binding RowPos}"
+                                                                    CanUserSort="False"
+                                                                    Header="{DynamicResource 托盘层}"
+                                                                    IsReadOnly="True" />
+                                                                <DataGridTextColumn
+                                                                    Width="1*"
+                                                                    Binding="{Binding WaterValue}"
+                                                                    CanUserSort="False"
+                                                                    Header="{DynamicResource 阳极}" />
+                                                                <DataGridTextColumn
+                                                                    Width="1*"
+                                                                    Binding="{Binding BKCUWaterTest}"
+                                                                    CanUserSort="False"
+                                                                    Header="{DynamicResource 阳极测试}" />
+                                                            </x:Array>
+                                                        </b:ChangePropertyAction.Value>
+
+                                                    </b:ChangePropertyAction>
+                                                </b:DataTrigger>
+                                                <!--  阴极型  -->
+                                                <b:DataTrigger Binding="{Binding CurWaterMode}" Value="阴极">
+                                                    <b:ChangePropertyAction PropertyName="Column">
+                                                        <b:ChangePropertyAction.Value>
+                                                            <x:Array Type="{x:Type DataGridColumn}">
+                                                                <DataGridTextColumn
+                                                                    Width="1*"
+                                                                    Binding="{Binding RowPos}"
+                                                                    CanUserSort="False"
+                                                                    Header="{DynamicResource 托盘层}"
+                                                                    IsReadOnly="True" />
+                                                                <DataGridTextColumn
+                                                                    Width="1*"
+                                                                    Binding="{Binding WaterValue}"
+                                                                    CanUserSort="False"
+                                                                    Header="{DynamicResource 阴极}" />
+                                                                <DataGridTextColumn
+                                                                    Width="1*"
+                                                                    Binding="{Binding BKAIWaterTest}"
+                                                                    CanUserSort="False"
+                                                                    Header="{DynamicResource 阴极测试}" />
+                                                            </x:Array>
+                                                        </b:ChangePropertyAction.Value>
+
+                                                    </b:ChangePropertyAction>
+                                                </b:DataTrigger>
+                                                <!--  阴阳极型  -->
+                                                <b:DataTrigger Binding="{Binding CurWaterMode}" Value="阴阳极">
+                                                    <b:ChangePropertyAction PropertyName="Column">
+                                                        <b:ChangePropertyAction.Value>
+                                                            <x:Array Type="{x:Type DataGridColumn}">
+                                                                <DataGridTextColumn
+                                                                    Width="1*"
+                                                                    Binding="{Binding RowPos}"
+                                                                    CanUserSort="False"
+                                                                    Header="{DynamicResource 托盘层}"
+                                                                    IsReadOnly="True" />
+                                                                <DataGridTextColumn
+                                                                    Width="1*"
+                                                                    Binding="{Binding BKCUWaterValue}"
+                                                                    CanUserSort="False"
+                                                                    Header="{DynamicResource 阳极}" />
+                                                                <DataGridTextColumn
+                                                                    Width="1*"
+                                                                    Binding="{Binding BKAIWaterValue}"
+                                                                    CanUserSort="False"
+                                                                    Header="{DynamicResource 阴极}" />
+                                                                <DataGridTextColumn
+                                                                    Width="1*"
+                                                                    Binding="{Binding BKCUWaterTest}"
+                                                                    CanUserSort="False"
+                                                                    Header="{DynamicResource 阳极测试}" />
+                                                                <DataGridTextColumn
+                                                                    Width="1*"
+                                                                    Binding="{Binding BKAIWaterTest}"
+                                                                    CanUserSort="False"
+                                                                    Header="{DynamicResource 阴极测试}" />
+                                                            </x:Array>
+                                                        </b:ChangePropertyAction.Value>
+
+                                                    </b:ChangePropertyAction>
+                                                </b:DataTrigger>
+                                            </b:Interaction.Triggers>
+                                        </local:DynamicStateDataGridCol>
+                                    </b:Interaction.Behaviors>
+                                </DataGrid>
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="{DynamicResource 返工记录}"
+                                    Visibility="Collapsed" />
+                                <TextBox
+                                    Margin="3"
+                                    Padding="10,0,0,0"
+                                    VerticalContentAlignment="Center"
+                                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                    Text="{Binding ReworkRecord}"
+                                    Visibility="Collapsed" />
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="{DynamicResource 环境露点}"
+                                    Visibility="Collapsed" />
+                                <TextBox
+                                    Margin="3"
+                                    Padding="10,0,0,0"
+                                    VerticalContentAlignment="Center"
+                                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                    Text="{Binding EnvironmentalDewPoint}"
+                                    Visibility="Collapsed" />
+                                <TextBlock />
+                                <Button
+                                    custompanel:AutoHeight.ColSpan="2"
+                                    user:UserHelp.Name="水含量上传"
+                                    Command="{Binding UpWaterCommand}"
+                                    Content="{DynamicResource 水含量上传}"
+                                    Foreground="White" />
+                                <TextBlock />
+                                <UniformGrid custompanel:AutoHeight.ColSpan="5" Columns="3">
+                                    <Button
+                                        user:UserHelp.Name="添加托盘"
+                                        Command="{Binding AddDeletePallteCommand}"
+                                        Content="{DynamicResource 添加托盘}"
+                                        Foreground="White">
+                                        <Button.CommandParameter>
+                                            <sys:Boolean>True</sys:Boolean>
+                                        </Button.CommandParameter>
+                                    </Button>
+                                    <Button
+                                        user:UserHelp.Name="清除托盘"
+                                        Command="{Binding AddDeletePallteCommand}"
+                                        Content="{DynamicResource 清除托盘}"
+                                        Foreground="White">
+                                        <Button.CommandParameter>
+                                            <sys:Boolean>false</sys:Boolean>
+                                        </Button.CommandParameter>
+                                    </Button>
+                                    <Button
+                                        user:UserHelp.Name="托盘NG"
+                                        Command="{Binding PalletNGCommand}"
+                                        Content="{DynamicResource 托盘NG}"
+                                        Foreground="White" />
+                                </UniformGrid>
+
+                                <!--<Button
+                                    Command="{Binding ClearOvenTaskCommand}"
+                                    Content="{DynamicResource 清除任务}"
+                                    Foreground="White" />-->
+
+                            </custompanel:AutoHeight>
+                        </GroupBox>
+                        <GroupBox Grid.Column="3" Margin="5">
+                            <GroupBox.Header>
+                                <TextBlock Foreground="White" Text="{DynamicResource 参数设置}" />
+                            </GroupBox.Header>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="9*" />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <DataGrid
+                                    Grid.ColumnSpan="2"
+                                    AutoGenerateColumns="False"
+                                    CanUserAddRows="False"
+                                    ItemsSource="{Binding CurParams.Value}">
+                                    <DataGrid.Resources>
+                                        <Style BasedOn="{StaticResource ScrollStyle_Mobile}" TargetType="ScrollBar" />
+                                    </DataGrid.Resources>
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn
+                                            Width="1*"
+                                            Binding="{Binding Name}"
+                                            Header="{DynamicResource 参数名}" />
+                                        <DataGridTextColumn
+                                            Width="1*"
+                                            Binding="{Binding ParameterValue}"
+                                            Header="{DynamicResource 参数值}" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                <ComboBox
+                                    Grid.Row="1"
+                                    DisplayMemberPath="RunName"
+                                    ItemsSource="{Binding Runs}"
+                                    SelectedIndex="0"
+                                    SelectedValue="{Binding CurFormulaOven, Mode=OneWayToSource}" />
+                                <ComboBox
+                                    Grid.Row="2"
+                                    DisplayMemberPath="Key"
+                                    ItemsSource="{Binding Formulas}"
+                                    SelectedIndex="0"
+                                    SelectedValue="{Binding CurParams, Mode=OneWayToSource}" />
+                                <Button
+                                    Grid.Row="1"
+                                    Grid.RowSpan="2"
+                                    Grid.Column="1"
+                                    Margin="5,0"
+                                    user:UserHelp.Name="参数设置NG"
+                                    Content="{DynamicResource 参数设置}"
+                                    Foreground="White" />
+                            </Grid>
+
+                        </GroupBox>
+                        <GroupBox Grid.Column="1" Margin="5">
+                            <GroupBox.Header>
+                                <TextBlock Foreground="White" Text="{DynamicResource 清除任务}" />
+                            </GroupBox.Header>
+                            <custompanel:AutoHeight ColCount="2">
+                                <ComboBox
+                                    DisplayMemberPath="RunName"
+                                    ItemsSource="{Binding RunProcesses}"
+                                    SelectedIndex="0"
+                                    SelectedValue="{Binding CurDeleTaskRun, Mode=OneWayToSource}" />
+                                <Button
+                                    user:UserHelp.Name="任务删除"
+                                    Command="{Binding ClearTaskCommand}"
+                                    Content="{DynamicResource 删除}"
+                                    Foreground="White" />
+                            </custompanel:AutoHeight>
+                        </GroupBox>
+                    </Grid>
+
+                </TabItem>
+                <TabItem Header="{DynamicResource MES设置}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.3*" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <DockPanel>
+                            <Button
+                                Margin="10"
+                                user:UserHelp.Name="MES界面-MES接口调用"
+                                Command="{Binding MesInterfaceInvokeCommand}"
+                                Content="{Binding CurMesInterface.Name}"
+                                DockPanel.Dock="Bottom"
+                                Foreground="White" />
+
+                            <DataGrid
+                                AutoGenerateColumns="False"
+                                BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                                CanUserAddRows="False"
+                                CanUserSortColumns="False"
+                                DockPanel.Dock="Bottom"
+                                IsReadOnly="True"
+                                ItemsSource="{Binding MesInterface}"
+                                SelectedIndex="0"
+                                SelectedValue="{Binding CurMesInterface}">
+                                <DataGrid.Resources>
+                                    <Style BasedOn="{StaticResource ScrollStyle_Mobile}" TargetType="ScrollBar" />
+                                </DataGrid.Resources>
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn
+                                        Width="1*"
+                                        Binding="{Binding Name}"
+                                        Header="{DynamicResource MES接口}" />
+                                </DataGrid.Columns>
+                                <DataGrid.ColumnHeaderStyle>
+                                    <Style TargetType="{x:Type DataGridColumnHeader}">
+                                        <Setter Property="FontSize" Value="16" />
+                                        <Setter Property="Background" Value="#009688" />
+                                        <Setter Property="Foreground" Value="White" />
+                                        <Setter Property="Padding" Value="8" />
+
+
+                                    </Style>
+                                </DataGrid.ColumnHeaderStyle>
+
+                            </DataGrid>
+                        </DockPanel>
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <UniformGrid
+                                Grid.ColumnSpan="2"
+                                Margin="5"
+                                Columns="1">
+                                <TextBox
+                                    Margin="0,30,0,0"
+                                    Padding="10,0,0,0"
+                                    VerticalContentAlignment="Center"
+                                    materialDesign:HintAssist.Hint="MES Url"
+                                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                    Text="{Binding CurMesInterface.MesUrl}" />
+                                <TextBox
+                                    Margin="0,30,0,0"
+                                    Padding="10,0,0,0"
+                                    VerticalContentAlignment="Center"
+                                    materialDesign:HintAssist.Hint="Name"
+                                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                    Text="{Binding CurMesInterface.Name}" />
+                            </UniformGrid>
+
+                            <UniformGrid Grid.Row="1" Rows="1">
+                                <TextBox
+                                    Margin="10"
+                                    Padding="10,0,0,0"
+                                    VerticalContentAlignment="Center"
+                                    materialDesign:HintAssist.Hint="Send"
+                                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                    Text="{Binding CurMesInterface.MesSendData}"
+                                    TextWrapping="Wrap" />
+                                <TextBox
+                                    Margin="10"
+                                    Padding="10,0,0,0"
+                                    VerticalContentAlignment="Center"
+                                    materialDesign:HintAssist.Hint="Recv"
+                                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                    Text="{Binding CurMesInterface.MesRecvData}"
+                                    TextWrapping="Wrap" />
+                            </UniformGrid>
+
+                            <DataGrid
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                AutoGenerateColumns="False"
+                                CanUserAddRows="False"
+                                ItemsSource="{Binding CurMesInterface.Parameter}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn
+                                        Binding="{Binding Key}"
+                                        Header="Key"
+                                        IsReadOnly="True" />
+                                    <DataGridTextColumn
+                                        Binding="{Binding Value}"
+                                        Header="Value"
+                                        IsReadOnly="False" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+
+                        </Grid>
+                    </Grid>
+
+
+                </TabItem>
+
+            </TabControl>
+        </materialDesign:Card>
+    </Grid>
+</UserControl>

@@ -1,0 +1,99 @@
+﻿<UserControl
+    x:Class="WPFMachine.Views.Control.ChartWin"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:WPFMachine.Views.Control"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:views="clr-namespace:WPFMachine.Views"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <UserControl.Template>
+        <ControlTemplate TargetType="local:ChartWin">
+            <Grid>
+                <materialDesign:Card Width="400">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <DockPanel Grid.Row="0">
+                            <Label
+                                Margin="3,1,1,1"
+                                HorizontalAlignment="Center"
+                                Content="{Binding RunName}"
+                                DockPanel.Dock="Left"
+                                FontSize="25"
+                                FontWeight="Light" />
+
+                        </DockPanel>
+
+                        <materialDesign:Card Grid.Row="1" materialDesign:ElevationAssist.Elevation="Dp5">
+                            <TabControl
+                                Margin="5"
+                                ItemsSource="{TemplateBinding Cavity}"
+                                SelectedItem="{Binding CurCavity, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=local:ChartWin}}"
+                                Style="{StaticResource MaterialDesignFilledTabControl}"
+                                TabStripPlacement="Top">
+                                <TabControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="炉腔" />
+                                            <TextBlock Text="{Binding}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </TabControl.ItemTemplate>
+                                <TabControl.ContentTemplate>
+                                    <DataTemplate DataType="control:ChartWin">
+                                        <materialDesign:Card>
+                                            <TabControl
+                                                Margin="0,3,0,0"
+                                                ItemsSource="{Binding Pallet, RelativeSource={RelativeSource AncestorType=local:ChartWin}}"
+                                                SelectedItem="{Binding CurPallet, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=local:ChartWin}}"
+                                                Style="{StaticResource MaterialDesignFilledTabControl}"
+                                                TabStripPlacement="Right">
+
+                                                <TabControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Text="托盘" />
+                                                            <TextBlock Text="{Binding}" />
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </TabControl.ItemTemplate>
+
+                                                <TabControl.ContentTemplate>
+                                                    <DataTemplate DataType="control:ChartWin">
+                                                        <ItemsControl ItemsSource="{Binding Conditions, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=local:ChartWin}}">
+                                                            <ItemsControl.ItemsPanel>
+                                                                <ItemsPanelTemplate>
+                                                                    <WrapPanel Orientation="Horizontal" />
+                                                                </ItemsPanelTemplate>
+                                                            </ItemsControl.ItemsPanel>
+                                                            <ItemsControl.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <CheckBox
+                                                                        Content="{Binding ChName}"
+                                                                        IsChecked="{Binding IsShow}"
+                                                                        Style="{StaticResource MaterialDesignFilterChipSecondaryCheckBox}" />
+                                                                </DataTemplate>
+                                                            </ItemsControl.ItemTemplate>
+                                                        </ItemsControl>
+                                                    </DataTemplate>
+                                                </TabControl.ContentTemplate>
+                                            </TabControl>
+                                        </materialDesign:Card>
+                                    </DataTemplate>
+                                </TabControl.ContentTemplate>
+                            </TabControl>
+                        </materialDesign:Card>
+                    </Grid>
+                </materialDesign:Card>
+            </Grid>
+        </ControlTemplate>
+    </UserControl.Template>
+
+</UserControl>
+

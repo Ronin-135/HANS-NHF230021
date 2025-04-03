@@ -1,0 +1,192 @@
+﻿<UserControl
+    x:Class="WPFMachine.Views.MonitoringInterface"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dd="urn:gong-wpf-dragdrop"
+    xmlns:local="clr-namespace:WPFMachine.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    SnapsToDevicePixels="True"
+    TextOptions.TextFormattingMode="Display"
+    TextOptions.TextRenderingMode="ClearType"
+    UseLayoutRounding="True"
+    mc:Ignorable="d">
+    <Border
+        BorderBrush="{DynamicResource PrimaryBlueColor}"
+        BorderThickness="2"
+        CornerRadius="5">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid Background="{DynamicResource BorderColor}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="4*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="2.6*" />
+                </Grid.ColumnDefinitions>
+                <Label
+                    Grid.Column="0"
+                    Padding="10,10,0,10"
+                    Content="模组ID"
+                    FontSize="16"
+                    Foreground="White" />
+                <Label
+                    Grid.Column="1"
+                    Padding="10,10,0,10"
+                    Content="模块名称"
+                    FontSize="16"
+                    Foreground="White" />
+                <Label
+                    Grid.Column="2"
+                    Padding="0,10,0,10"
+                    Content="运行信息"
+                    FontSize="16"
+                    Foreground="White" />
+                <Label
+                    Grid.Column="3"
+                    Padding="30,10,10,10"
+                    Content="运行状态"
+                    FontSize="16"
+                    Foreground="White" />
+                <Label
+                    Grid.Column="4"
+                    Padding="10"
+                    Content="模组状态"
+                    FontSize="16"
+                    Foreground="White" />
+                <Label
+                    Grid.Column="5"
+                    Padding="0,10,0,10"
+                    Content="CT时间"
+                    FontSize="16"
+                    Foreground="White" />
+            </Grid>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Visible">
+                <ScrollViewer.Resources>
+                    <Style BasedOn="{StaticResource ScrollStyle_Mobile}" TargetType="ScrollBar" />
+                    <!--  纵向滚动条宽度  -->
+                    <sys:Double x:Key="VerticalScrollBarThickness">10</sys:Double>
+                    <!--  纵向滑块圆角  -->
+                    <CornerRadius x:Key="VerticalThumbCornerRadius">5</CornerRadius>
+                </ScrollViewer.Resources>
+
+                <ItemsControl
+                    Name="item1"
+                    dd:DragDrop.IsDragSource="True"
+                    dd:DragDrop.IsDropTarget="True"
+                    dd:DragDrop.UseDefaultDragAdorner="True"
+                    Background="{DynamicResource PrimaryBackgroundColor}"
+                    ItemsSource="{Binding Modules}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border
+                                Margin="5"
+                                Background="Transparent"
+                                BorderBrush="White"
+                                BorderThickness="1">
+                                <materialDesign:Card>
+                                    <StackPanel>
+                                        <Expander HorizontalAlignment="Stretch">
+                                            <Expander.Header>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="2*" />
+                                                        <ColumnDefinition Width="5*" />
+                                                        <ColumnDefinition Width="2*" />
+                                                        <ColumnDefinition Width="2*" />
+                                                        <ColumnDefinition Width="2*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Label
+                                                        Grid.Column="0"
+                                                        Content="{Binding ModuleRunID}"
+                                                        FontSize="14" />
+                                                    <Label
+                                                        Grid.Column="1"
+                                                        Content="{Binding RunName}"
+                                                        FontSize="14" />
+                                                    <Label
+                                                        Grid.Column="2"
+                                                        Content="{Binding RunMsg}"
+                                                        FontSize="14" />
+                                                    <Label
+                                                        Grid.Column="3"
+                                                        Content="{Binding RunModeName}"
+                                                        FontSize="14" />
+                                                    <Label
+                                                        Grid.Column="4"
+                                                        Content="{Binding ModuleStatusInfo}"
+                                                        FontSize="14" />
+                                                    <Label
+                                                        Grid.Column="5"
+                                                        Content="{Binding ModuleUseTime}"
+                                                        FontSize="14" />
+                                                </Grid>
+                                            </Expander.Header>
+                                            <StackPanel Margin="24,8,24,16" Orientation="Vertical">
+                                                <DataGrid
+                                                    AutoGenerateColumns="False"
+                                                    CanUserReorderColumns="False"
+                                                    IsReadOnly="True"
+                                                    ItemsSource="{Binding ArrEvent}">
+
+                                                    <DataGrid.Resources>
+                                                        <Style TargetType="{x:Type DataGridRow}">
+                                                            <Setter Property="IsHitTestVisible" Value="False" />
+                                                        </Style>
+                                                    </DataGrid.Resources>
+                                                    <DataGrid.Columns>
+                                                        <DataGridTextColumn
+                                                            Width="3*"
+                                                            Binding="{Binding ModEventName}"
+                                                            Header="任务" />
+                                                        <DataGridTextColumn
+                                                            Width="3*"
+                                                            Binding="{Binding RunName}"
+                                                            Header="交互模组" />
+                                                        <DataGridTextColumn
+                                                            Width="3*"
+                                                            Binding="{Binding Station}"
+                                                            Header="交互工位" />
+                                                        <DataGridTextColumn
+                                                            Width="3*"
+                                                            Binding="{Binding State}"
+                                                            Header="运行阶段" />
+                                                        <DataGridTextColumn
+                                                            Width="3*"
+                                                            Binding="{Binding StartTime}"
+                                                            Header="CT时间" />
+                                                    </DataGrid.Columns>
+                                                </DataGrid>
+
+
+                                            </StackPanel>
+                                        </Expander>
+                                    </StackPanel>
+                                </materialDesign:Card>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</UserControl>

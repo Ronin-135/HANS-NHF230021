@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup Label="MultilingualAppToolkit">
+    <MultilingualAppToolkitVersion>4.0</MultilingualAppToolkitVersion>
+    <MultilingualFallbackLanguage>aa</MultilingualFallbackLanguage>
+    <TranslationReport Condition="'$(Configuration)' == 'Release'">true</TranslationReport>
+    <SuppressPseudoWarning Condition="'$(Configuration)' == 'Debug'">true</SuppressPseudoWarning>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <PlatformTarget>x64</PlatformTarget>
+    <BaseOutputPath>..\bin</BaseOutputPath>
+    <BaseIntermediateOutputPath />
+    <LangVersion>12</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>False</Optimize>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.ResxResources.targets" Label="MultilingualAppToolkit" Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\v$(MultilingualAppToolkitVersion)\Microsoft.Multilingual.ResxResources.targets')" />
+  <Target Name="MATPrerequisite" BeforeTargets="PrepareForBuild" Condition="!Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.ResxResources.targets')" Label="MultilingualAppToolkit">
+    <Warning Text="$(MSBuildProjectFile) is Multilingual build enabled, but the Multilingual App Toolkit is unavailable during the build. If building with Visual Studio, please check to ensure that toolkit is properly installed." />
+  </Target>
+  <ItemGroup>
+    <Compile Remove="Views\Control\Tools\**" />
+    <EmbeddedResource Remove="Views\Control\Tools\**" />
+    <None Remove="Views\Control\Tools\**" />
+    <Page Remove="Views\Control\Tools\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Image\avatar.png" />
+    <None Remove="Image\Machine.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+    <PackageReference Include="Enums.NET" Version="4.0.1" />
+    <PackageReference Include="FastDeepCloner" Version="1.3.6" />
+    <PackageReference Include="gong-wpf-dragdrop" Version="3.2.1" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+    <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
+    <PackageReference Include="ScottPlot.WPF" Version="4.1.69" />
+    <PackageReference Include="SqlSugarCore" Version="5.1.4.105" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="HelperLibraryWPF">
+      <HintPath>Dll\HelperLibraryWPF.dll</HintPath>
+    </Reference>
+    <Reference Include="HslCommunication">
+      <HintPath>Dll\HslCommunication.dll</HintPath>
+    </Reference>
+    <Reference Include="PropertyTools.Wpf">
+      <HintPath>Dll\PropertyTools.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="SystemControlLibrary">
+      <HintPath>Dll\SystemControlLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Dll\ControlOmronPLC.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Dll\DeviceManagerLibrary.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Dll\HslCommunication.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Dll\sqlite3.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Control\Transfer\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\avatar.png" />
+    <Resource Include="Image\Machine.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\Control\RobotPalletView.xaml">
+      <CustomToolNamespace>RobotPallet</CustomToolNamespace>
+    </Page>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,111 @@
+﻿<UserControl
+    x:Class="WPFMachine.Views.Control.CollectionPallet"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:WPFMachine.Views.Control"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:views="clr-namespace:WPFMachine.Views"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <UserControl.Template>
+        <ControlTemplate TargetType="local:CollectionPallet">
+            <Grid>
+                <ItemsControl Name="item1" ItemsSource="{TemplateBinding Plts}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="1" Rows="{Binding Plts.Length, RelativeSource={RelativeSource AncestorType=local:CollectionPallet}}" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <local:PalletShowView>
+                                    <local:PalletShowView.Tips>
+                                        <MultiBinding Converter="{StaticResource GetIndex}" StringFormat="{}{0}">
+                                            <Binding />
+                                            <Binding Path="ItemsSource" RelativeSource="{RelativeSource AncestorType=ItemsControl}" />
+                                        </MultiBinding>
+                                    </local:PalletShowView.Tips>
+                                </local:PalletShowView>
+                                <Border >
+                                    <Border.Visibility>
+                                        <MultiBinding  UpdateSourceTrigger="PropertyChanged">
+                                            <MultiBinding.Converter>
+                                                <views:IndexMapConversion Default="{x:Static Visibility.Hidden}"  Convertible="{StaticResource ReverseVisibility}" />
+                                            </MultiBinding.Converter>
+                                            <Binding UpdateSourceTrigger="PropertyChanged" />
+                                            <Binding
+                                                Path="Plts"
+                                                RelativeSource="{RelativeSource AncestorType=UserControl}"
+                                                UpdateSourceTrigger="PropertyChanged" />
+                                             <Binding
+                                                Path="PltEnables"
+                                                RelativeSource="{RelativeSource AncestorType=UserControl}"
+                                                UpdateSourceTrigger="PropertyChanged" />
+
+                                        </MultiBinding>
+                                    </Border.Visibility>
+                                    <Viewbox>
+                                        <Path
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Data="{DynamicResource lock}"
+                                        Stroke="Black"
+                                        Opacity="0.4"
+                                        StrokeThickness="3"/>
+                                    </Viewbox>
+                                </Border>
+                            </Grid>
+
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <!--<Canvas
+                        Grid.Row="0"
+                        Grid.RowSpan="10"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="10"
+                        Visibility="{TemplateBinding Disable}">
+                        <Line
+                            Stroke="{DynamicResource PrimaryHueMidBrush}"
+                            StrokeThickness="2"
+                            X1="0"
+                            X2="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Mode=OneWay, Path=ActualWidth}"
+                            Y1="0"
+                            Y2="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Mode=OneWay, Path=ActualHeight}" />
+                        <Line
+                            Stroke="{DynamicResource PrimaryHueMidBrush}"
+                            StrokeThickness="2"
+                            X1="0"
+                            X2="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Mode=OneWay, Path=ActualWidth}"
+                            Y1="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Mode=OneWay, Path=ActualHeight}"
+                            Y2="0" />
+                    </Canvas>
+
+                    <Canvas
+                        Grid.Row="0"
+                        Grid.RowSpan="10"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="10"
+                        Visibility="{TemplateBinding PressureVisi}">
+                        <Line
+                            Stroke="{DynamicResource PrimaryHueMidBrush}"
+                            StrokeThickness="2"
+                            X1="0"
+                            X2="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Mode=OneWay, Path=ActualWidth}"
+                            Y1="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Mode=OneWay, Path=ActualHeight, Converter={StaticResource Magnification3_1}}"
+                            Y2="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Mode=OneWay, Path=ActualHeight, Converter={StaticResource Magnification3_1}}" />
+                        <Line
+                            Stroke="{DynamicResource PrimaryHueMidBrush}"
+                            StrokeThickness="2"
+                            X1="0"
+                            X2="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Mode=OneWay, Path=ActualWidth}"
+                            Y1="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Mode=OneWay, Path=ActualHeight, Converter={StaticResource Magnification3_2}}"
+                            Y2="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Mode=OneWay, Path=ActualHeight, Converter={StaticResource Magnification3_2}}" />
+                    </Canvas>-->
+            </Grid>
+        </ControlTemplate>
+    </UserControl.Template>
+</UserControl>

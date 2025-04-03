@@ -1,0 +1,142 @@
+﻿<UserControl
+    x:Class="WPFMachine.Views.OtherTools"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:control="clr-namespace:WPFMachine.Views.Control"
+    xmlns:custompanel="clr-namespace:WPFMachine.Views.Control.CustomPanel"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:WPFMachine.Views"
+    xmlns:machine="clr-namespace:Machine"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:user="clr-namespace:WPFMachine.Frame.Userlib"
+    xmlns:viewmodule="clr-namespace:WPFMachine.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewmodule:OtherToolsViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <local:BoolToConverter
+            x:Key="link"
+            FalseValue="{DynamicResource 断开}"
+            TrueValue="{DynamicResource 已链接}" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <materialDesign:Card
+            Grid.Row="0"
+            Grid.Column="0"
+            Margin="5"
+            materialDesign:ElevationAssist.Elevation="Dp4">
+            <GroupBox>
+                <GroupBox.Header>
+                    <TextBlock Foreground="White" Text="{DynamicResource 扫码调试}" />
+                </GroupBox.Header>
+                <custompanel:AutoHeight ColCount="3">
+                    <TextBlock VerticalAlignment="Center" Text="{DynamicResource 扫码位}" />
+                    <ComboBox
+                        Name="SeleCode"
+                        custompanel:AutoHeight.ColSpan="2"
+                        DisplayMemberPath="Name"
+                        ItemsSource="{Binding Codes}"
+                        SelectedIndex="0"
+                        SelectedValue="{Binding CurCode, Mode=OneWayToSource}" />
+
+                    <TextBlock VerticalAlignment="Center" Text="{DynamicResource 扫码IP}" />
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        custompanel:AutoHeight.ColSpan="2"
+                        Text="{Binding ElementName=SeleCode, Path=SelectedValue.IP}" />
+
+                    <TextBlock VerticalAlignment="Center" Text="{DynamicResource 扫码端口}" />
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        custompanel:AutoHeight.ColSpan="2"
+                        Text="{Binding ElementName=SeleCode, Path=SelectedValue.Port}" />
+
+
+                    <TextBlock VerticalAlignment="Center" Text="{DynamicResource 扫码状态}" />
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        custompanel:AutoHeight.ColSpan="2"
+                        Text="{Binding ElementName=SeleCode, Path=SelectedValue.Client._IsConnect, Converter={StaticResource link}}" />
+
+                    <UniformGrid custompanel:AutoHeight.ColSpan="3" Rows="1">
+                        <Button
+                            Margin="3"
+                            Command="{Binding ScanConnectCommand}"
+                            Content="{DynamicResource 链接}"
+                            Foreground="White" />
+                        <Button
+                            Margin="3"
+                            Command="{Binding DisConnectCommand}"
+                            Content="{DynamicResource 断开}"
+                            Foreground="White" />
+                        <Button
+                            Margin="3"
+                            Command="{Binding ScanCommand}"
+                            Content="{DynamicResource 扫码}"
+                            Foreground="White" />
+                    </UniformGrid>
+                </custompanel:AutoHeight>
+            </GroupBox>
+
+        </materialDesign:Card>
+        <materialDesign:Card
+            Grid.Row="1"
+            Grid.Column="0"
+            Margin="5"
+            materialDesign:ElevationAssist.Elevation="Dp4">
+
+            <GroupBox>
+                <GroupBox.Header>
+                    <TextBlock Foreground="White" Text="{DynamicResource 抓手动作}" />
+                </GroupBox.Header>
+                <UniformGrid Columns="2">
+                    <TextBlock VerticalAlignment="Center" Text="{DynamicResource 机器人}" />
+                    <ComboBox
+                        DisplayMemberPath="RunName"
+                        ItemsSource="{Binding Robots}"
+                        SelectedIndex="0"
+                        SelectedValue="{Binding CurRobot, Mode=OneWayToSource}" />
+                    <Button
+                        Margin="5"
+                        user:UserHelp.Name="一键打开"
+                        Command="{Binding ClawActionCommand}"
+                        Content="{DynamicResource 一键打开}"
+                        Foreground="White">
+                        <Button.CommandParameter>
+                            <sys:Boolean>False</sys:Boolean>
+                        </Button.CommandParameter>
+                    </Button>
+                    <Button
+                        Margin="5"
+                        user:UserHelp.Name="一键关闭"
+                        Command="{Binding ClawActionCommand}"
+                        Content="{DynamicResource 一键关闭}"
+                        Foreground="White">
+                        <Button.CommandParameter>
+                            <sys:Boolean>True</sys:Boolean>
+                        </Button.CommandParameter>
+                    </Button>
+                </UniformGrid>
+            </GroupBox>
+        </materialDesign:Card>
+        <!--<materialDesign:Card
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Grid.Column="1"
+            Margin="5">
+            <control:OvenChartWin DataContext="{Binding OvenChartModule}" />
+        </materialDesign:Card>-->
+    </Grid>
+</UserControl>

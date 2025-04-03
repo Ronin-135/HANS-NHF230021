@@ -1,0 +1,133 @@
+﻿<UserControl
+    x:Class="WPFMachine.Views.Control.BatterysView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:WPFMachine.Views.Control"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    x:Name="text"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <UserControl.ToolTip>
+        <ToolTip Placement="Right" Background="#4A5668">
+            <Border
+                BorderBrush="{DynamicResource PrimaryHueLightBrush}"
+                BorderThickness="2"
+                CornerRadius="5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="10*" />
+                    </Grid.RowDefinitions>
+
+                    <Viewbox Grid.Row="0">
+                        <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=ToolTip}, Path=PlacementTarget.Title}" />
+                    </Viewbox>
+
+
+                    <ItemsControl Grid.Row="1" ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=ToolTip}, Path=PlacementTarget.Bats}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="{Binding RelativeSource={RelativeSource AncestorType=ToolTip}, Path=PlacementTarget.MaxCol}" Rows="{Binding RelativeSource={RelativeSource AncestorType=ToolTip}, Path=PlacementTarget.MaxRow}" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Border BorderBrush="{DynamicResource PrimaryHueLightBrush}" BorderThickness="1">
+                                        <TextBlock Text="{Binding Code}" />
+                                    </Border>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                </Grid>
+            </Border>
+
+        </ToolTip>
+    </UserControl.ToolTip>
+    <UserControl.Template>
+        <ControlTemplate TargetType="local:BatterysView">
+            <Border
+                BorderBrush="{DynamicResource PrimaryHueLightBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="{TemplateBinding TitleHeight}" />
+                        <RowDefinition Height="8*" />
+                    </Grid.RowDefinitions>
+
+                    <Viewbox Grid.Row="0">
+                        <TextBlock Text="{TemplateBinding Title}" />
+                    </Viewbox>
+                    <Border
+                        Name="ShowBat"
+                        Grid.Row="1"
+                        BorderBrush="{DynamicResource PrimaryHueLightBrush}"
+                        BorderThickness="{TemplateBinding ContentBorderThickness}"
+                        CornerRadius="2">
+
+                        <ItemsControl
+                            Name="item"
+                            ItemsSource="{TemplateBinding Bats}"
+                            Visibility="{TemplateBinding ContentVisibility}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="{Binding MaxCol, RelativeSource={RelativeSource AncestorType=local:BatterysView}}" Rows="{Binding MaxRow, RelativeSource={RelativeSource AncestorType=local:BatterysView}}" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <local:BatView>
+                                        <b:Interaction.Triggers>
+                                            <b:DataTrigger Binding="{Binding IsReversal, RelativeSource={RelativeSource AncestorType=local:BatterysView}}" Value="True">
+                                                <b:ChangePropertyAction PropertyName="Text">
+                                                    <b:ChangePropertyAction.Value>
+
+                                                        <MultiBinding Converter="{StaticResource GetIndex}" StringFormat="{}{0}">
+                                                            <Binding />
+                                                            <Binding Path="ItemsSource" RelativeSource="{RelativeSource AncestorType=ItemsControl}" />
+                                                        </MultiBinding>
+                                                    </b:ChangePropertyAction.Value>
+                                                </b:ChangePropertyAction>
+                                            </b:DataTrigger>
+                                            <b:DataTrigger Binding="{Binding IsReversal, RelativeSource={RelativeSource AncestorType=local:BatterysView}}" Value="False">
+                                                <b:ChangePropertyAction PropertyName="Text">
+                                                    <b:ChangePropertyAction.Value>
+
+                                                        <MultiBinding Converter="{StaticResource GetIndex}" StringFormat="{}{0}">
+                                                            <Binding />
+                                                            <Binding Path="ItemsSource" RelativeSource="{RelativeSource AncestorType=ItemsControl}" />
+                                                        </MultiBinding>
+                                                    </b:ChangePropertyAction.Value>
+                                                </b:ChangePropertyAction>
+                                            </b:DataTrigger>
+                                        </b:Interaction.Triggers>
+                                    </local:BatView>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Border>
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="A" Value="Vertical">
+                    <Setter TargetName="item" Property="ItemsPanel">
+                        <Setter.Value>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="{Binding MaxRow, RelativeSource={RelativeSource AncestorType=local:BatterysView}}" Rows="{Binding MaxCol, RelativeSource={RelativeSource AncestorType=local:BatterysView}}" />
+                            </ItemsPanelTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </ControlTemplate.Triggers>
+
+        </ControlTemplate>
+    </UserControl.Template>
+</UserControl>

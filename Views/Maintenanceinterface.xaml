@@ -1,0 +1,631 @@
+﻿<UserControl
+    x:Class="WPFMachine.Views.Maintenanceinterface"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:control="clr-namespace:WPFMachine.Views.Control"
+    xmlns:custommarkupextension="clr-namespace:WPFMachine.Views.Control.CustomMarkupExtension"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:WPFMachine.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:user="clr-namespace:WPFMachine.Frame.Userlib"
+    xmlns:vm="clr-namespace:WPFMachine.ViewModels"
+    Name="maintenance"
+    d:DataContext="{d:DesignInstance Type=vm:MaintenanceinterfaceViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <local:BoolToConverter
+            x:Key="MotoSta"
+            FalseValue="{DynamicResource 停止}"
+            TrueValue="{DynamicResource 运行中}" />
+    </UserControl.Resources>
+    <materialDesign:DialogHost IsOpen="{Binding SpeedSettingInterface}">
+        <materialDesign:DialogHost.DialogContent>
+            <Grid Width="800" Height="600">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <UniformGrid
+                    Grid.Row="2"
+                    Grid.ColumnSpan="3"
+                    Rows="1">
+                    <Button
+                        Margin="5"
+                        Command="{Binding SaveSpeedCommand}"
+                        Content="{DynamicResource 保存}" />
+
+                    <Button
+                        Margin="5"
+                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                        Content="{DynamicResource 关闭}" />
+                </UniformGrid>
+                <materialDesign:Card Margin="4" materialDesign:ElevationAssist.Elevation="Dp4">
+                    <GroupBox Header="{DynamicResource 默认速度}">
+                        <UniformGrid Columns="1">
+                            <TextBox
+                                VerticalAlignment="Top"
+                                materialDesign:HintAssist.Hint="{DynamicResource 移动速度}"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Text="{Binding VelocityParameter[1][0]}" />
+                            <TextBox
+                                VerticalAlignment="Top"
+                                materialDesign:HintAssist.Hint="{DynamicResource 加速速度}"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Text="{Binding VelocityParameter[1][1]}" />
+                            <TextBox
+                                VerticalAlignment="Top"
+                                materialDesign:HintAssist.Hint="{DynamicResource 减速速度}"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Text="{Binding VelocityParameter[1][2]}" />
+                        </UniformGrid>
+                    </GroupBox>
+                </materialDesign:Card>
+                <materialDesign:Card
+                    Grid.Column="1"
+                    Margin="4"
+                    materialDesign:ElevationAssist.Elevation="Dp4">
+                    <GroupBox Header="{DynamicResource 快速速度}">
+                        <UniformGrid Columns="1">
+                            <TextBox
+                                VerticalAlignment="Top"
+                                materialDesign:HintAssist.Hint="{DynamicResource 移动速度}"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Text="{Binding VelocityParameter[3][0]}" />
+                            <TextBox
+                                VerticalAlignment="Top"
+                                materialDesign:HintAssist.Hint="{DynamicResource 加速速度}"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Text="{Binding VelocityParameter[3][1]}" />
+                            <TextBox
+                                VerticalAlignment="Top"
+                                materialDesign:HintAssist.Hint="{DynamicResource 减速速度}"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Text="{Binding VelocityParameter[3][2]}" />
+                        </UniformGrid>
+                    </GroupBox>
+                </materialDesign:Card>
+                <materialDesign:Card
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Margin="4"
+                    materialDesign:ElevationAssist.Elevation="Dp4">
+                    <GroupBox Header="{DynamicResource 复位速度}">
+                        <UniformGrid Columns="1">
+                            <TextBox
+                                VerticalAlignment="Top"
+                                materialDesign:HintAssist.Hint="{DynamicResource 移动速度}"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Text="{Binding VelocityParameter[0][0]}" />
+                            <TextBox
+                                VerticalAlignment="Top"
+                                materialDesign:HintAssist.Hint="{DynamicResource 加速速度}"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Text="{Binding VelocityParameter[0][1]}" />
+                            <TextBox
+                                VerticalAlignment="Top"
+                                materialDesign:HintAssist.Hint="{DynamicResource 减速速度}"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Text="{Binding VelocityParameter[0][2]}" />
+                        </UniformGrid>
+                    </GroupBox>
+                </materialDesign:Card>
+                <materialDesign:Card
+                    Grid.Row="1"
+                    Margin="4"
+                    materialDesign:ElevationAssist.Elevation="Dp4">
+                    <GroupBox Header="{DynamicResource 中等速度}">
+                        <UniformGrid Columns="1">
+                            <TextBox
+                                VerticalAlignment="Top"
+                                materialDesign:HintAssist.Hint="{DynamicResource 移动速度}"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Text="{Binding VelocityParameter[2][0]}" />
+                            <TextBox
+                                VerticalAlignment="Top"
+                                materialDesign:HintAssist.Hint="{DynamicResource 加速速度}"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Text="{Binding VelocityParameter[2][1]}" />
+                            <TextBox
+                                VerticalAlignment="Top"
+                                materialDesign:HintAssist.Hint="{DynamicResource 减速速度}"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Text="{Binding VelocityParameter[2][2]}" />
+                        </UniformGrid>
+                    </GroupBox>
+
+                </materialDesign:Card>
+            </Grid>
+        </materialDesign:DialogHost.DialogContent>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="4*" />
+            </Grid.ColumnDefinitions>
+            <Border
+                Margin="5"
+                BorderBrush="{DynamicResource BorderColor}"
+                BorderThickness="2"
+                CornerRadius="2">
+                <DataGrid
+                    AutoGenerateColumns="False"
+                    IsReadOnly="True"
+                    ItemsSource="{Binding Modules}"
+                    SelectedIndex="0"
+                    SelectedItem="{Binding SelectedValue}">
+                    <DataGrid.Resources>
+                        <Style BasedOn="{StaticResource ScrollStyle_Mobile}" TargetType="ScrollBar" />
+
+
+                    </DataGrid.Resources>
+                    <DataGrid.Columns>
+
+
+                        <DataGridTextColumn
+                            Width="1*"
+                            Binding="{Binding RunName}"
+                            CanUserSort="False"
+                            FontSize="16"
+                            Header="模组名称" />
+                    </DataGrid.Columns>
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="FontSize" Value="16" />
+                            <Setter Property="Background" Value="{DynamicResource BorderColor}" />
+                            <Setter Property="Foreground" Value="White" />
+                            <Setter Property="Padding" Value="10" />
+
+
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                </DataGrid>
+            </Border>
+
+            <materialDesign:Card Grid.Column="1" Margin="0,5,5,5">
+                <TabControl
+                    materialDesign:ColorZoneAssist.Background="{DynamicResource PrimaryHueMidBrush}"
+                    materialDesign:ColorZoneAssist.Foreground="White"
+                    materialDesign:ColorZoneAssist.Mode="PrimaryMid"
+                    Style="{StaticResource MaterialDesignFilledTabControl}">
+                    <TabItem>
+                        <TabItem.Header>
+
+                            <TextBlock
+                                FontSize="16"
+                                Foreground="White"
+                                Text="{DynamicResource 输入输出}" />
+                        </TabItem.Header>
+                        <!--<TextBlock Margin="8" Text="PrimaryLight Tab 1" />-->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <GroupBox
+                                Margin="5"
+                                materialDesign:ColorZoneAssist.Mode="PrimaryLight"
+                                FontSize="14">
+                                <GroupBox.Header>
+                                    <TextBlock Foreground="White" Text="{DynamicResource 输入}" />
+                                </GroupBox.Header>
+                                <ListBox ItemsSource="{Binding Inputs}">
+                                    <ListBox.Resources>
+                                        <Style BasedOn="{StaticResource ScrollStyle_Mobile}" TargetType="ScrollBar" />
+
+                                    </ListBox.Resources>
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="ListBoxItem">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="ListBoxItem">
+                                                        <ContentPresenter />
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <control:IOButton
+                                                Height="40"
+                                                Margin="3,0,3,2"
+                                                HorizontalAlignment="Stretch"
+                                                Enable="{Binding Status}"
+                                                EnableBrush="{DynamicResource PrimaryHueLightBrush}"
+                                                FontSize="14"
+                                                IsHitTestVisible="False"
+                                                RoundBorder="{DynamicResource PrimaryHueLightBrush}"
+                                                TextName="{Binding Name}"
+                                                TextNum="{Binding Num}" />
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </GroupBox>
+
+                            <GroupBox
+                                Grid.Column="1"
+                                Margin="5"
+                                materialDesign:ColorZoneAssist.Mode="PrimaryLight"
+                                FontSize="14">
+                                <GroupBox.Header>
+                                    <TextBlock Foreground="White" Text="{DynamicResource 输出}" />
+                                </GroupBox.Header>
+                                <ListBox x:Name="OutList" ItemsSource="{Binding OutPuts}">
+                                    <ListBox.Resources>
+                                        <Style BasedOn="{StaticResource ScrollStyle_Mobile}" TargetType="ScrollBar" />
+
+                                    </ListBox.Resources>
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="ListBoxItem">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="ListBoxItem">
+                                                        <ContentPresenter />
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <control:IOButton
+                                                Height="40"
+                                                Margin="3,0,3,2"
+                                                HorizontalAlignment="Stretch"
+                                                user:UserHelp.Name="IO输出信号"
+                                                Command="{Binding OutActionCommand}"
+                                                Enable="{Binding Status}"
+                                                EnableBrush="{DynamicResource PrimaryHueLightBrush}"
+                                                FontSize="14"
+                                                RoundBorder="{DynamicResource PrimaryHueLightBrush}"
+                                                TextName="{Binding Name}"
+                                                TextNum="{Binding Num}" />
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+
+                            </GroupBox>
+
+                        </Grid>
+
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+
+                            <TextBlock
+                                FontSize="16"
+                                Foreground="White"
+                                Text="{DynamicResource 电机调试}" />
+                        </TabItem.Header>
+
+                        <Grid Visibility="{Binding MotorService.IsShowMotorDebugging, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="4*" />
+                                <ColumnDefinition Width="3*" />
+                            </Grid.ColumnDefinitions>
+                            <Border
+                                Margin="3"
+                                BorderBrush="{DynamicResource PrimaryHueLightBrush}"
+                                BorderThickness="2"
+                                CornerRadius="5">
+                                <DataGrid
+                                    x:Name="Motors"
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    AutoGenerateColumns="False"
+                                    IsReadOnly="True"
+                                    ItemsSource="{Binding MotorService.Motors}"
+                                    SelectedItem="{Binding MotorService.CurMotor}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn
+                                            Width="1*"
+                                            Binding="{Binding Name}"
+                                            CanUserSort="False"
+                                            Header="{DynamicResource 电机}" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                            </Border>
+                            <Border
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Margin="3"
+                                BorderBrush="{DynamicResource PrimaryHueLightBrush}"
+                                BorderThickness="2"
+                                CornerRadius="5">
+                                <DataGrid
+                                    x:Name="MotorPosGrid"
+                                    AutoGenerateColumns="False"
+                                    CanUserAddRows="False"
+                                    CanUserDeleteRows="False"
+                                    HeadersVisibility="All"
+                                    IsReadOnly="{custommarkupextension:UserLimitsOfAuthorityBind 维护界面电机调试-点位是否可以编辑,
+                                                                                                 Converter={StaticResource Negation}}"
+                                    ItemsSource="{Binding MotorService.Motorposs}"
+                                    SelectedValue="{Binding MotorService.CurMotorpos}">
+                                    <DataGrid.Resources>
+                                        <Style BasedOn="{StaticResource ScrollStyle_Mobile}" TargetType="ScrollBar" />
+                                    </DataGrid.Resources>
+                                    <DataGrid.ContextMenu>
+                                        <ContextMenu Style="{StaticResource ContextMenuStyle}">
+                                            <MenuItem
+                                                user:UserHelp.Name="维护界面电机调试-添加点位"
+                                                Command="{Binding MotorService.AddPosCommand}"
+                                                Header="添加点位" />
+                                            <MenuItem
+                                                user:UserHelp.Name="维护界面电机调试-清除点位"
+                                                Command="{Binding MotorService.ReMovePosCommand}"
+                                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedValue}"
+                                                Header="清除点位" />
+                                        </ContextMenu>
+                                    </DataGrid.ContextMenu>
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="InitializingNewItem">
+                                            <prism:InvokeCommandAction Command="{Binding NewMotorPosCommand}" TriggerParameterPath="NewItem" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn
+                                            Width="1*"
+                                            Binding="{Binding posID}"
+                                            CanUserSort="False"
+                                            Header="{DynamicResource 序号}"
+                                            IsReadOnly="True"
+                                            SortDirection="Ascending" />
+                                        <DataGridTextColumn
+                                            Width="2*"
+                                            CanUserSort="False"
+                                            Header="{DynamicResource 点位}">
+                                            <DataGridTextColumn.Binding>
+                                                <Binding Path="posName" />
+                                            </DataGridTextColumn.Binding>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn
+                                            Width="2*"
+                                            Binding="{Binding posValue}"
+                                            CanUserSort="False"
+                                            Header="{DynamicResource 位置}" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Border>
+                            <Border
+                                Grid.Row="0"
+                                Grid.Column="2"
+                                Margin="3"
+                                BorderBrush="{DynamicResource PrimaryHueLightBrush}"
+                                BorderThickness="2"
+                                CornerRadius="5">
+                                <GroupBox BorderThickness="0">
+                                    <GroupBox.Header>
+                                        <TextBlock Foreground="White" Text="{DynamicResource IO状态}" />
+                                    </GroupBox.Header>
+                                    <UniformGrid Columns="1">
+                                        <control:IOButton
+                                            Margin="3"
+                                            Enable="{Binding MotorService.MotorPreparation}"
+                                            EnableBrush="{DynamicResource PrimaryHueLightBrush}"
+                                            FontSize="16"
+                                            RoundBorder="{DynamicResource PrimaryHueLightBrush}"
+                                            TextName="准备" />
+                                        <control:IOButton
+                                            Margin="3"
+                                            Enable="{Binding MotorService.MotorAlarm}"
+                                            EnableBrush="{DynamicResource PrimaryHueLightBrush}"
+                                            FontSize="16"
+                                            RoundBorder="{DynamicResource PrimaryHueLightBrush}"
+                                            TextName="报警" />
+                                        <control:IOButton
+                                            Margin="3"
+                                            Enable="{Binding MotorService.MotorPositiveLimit}"
+                                            EnableBrush="{DynamicResource PrimaryHueLightBrush}"
+                                            FontSize="16"
+                                            RoundBorder="{DynamicResource PrimaryHueLightBrush}"
+                                            TextName="正限位" />
+                                        <control:IOButton
+                                            Margin="3"
+                                            Enable="{Binding MotorService.MotorOperatingState}"
+                                            EnableBrush="{DynamicResource PrimaryHueLightBrush}"
+                                            FontSize="16"
+                                            RoundBorder="{DynamicResource PrimaryHueLightBrush}"
+                                            TextName="负限位" />
+                                        <control:IOButton
+                                            Margin="3"
+                                            Enable="{Binding MotorService.MotorOrigin}"
+                                            EnableBrush="{DynamicResource PrimaryHueLightBrush}"
+                                            FontSize="16"
+                                            RoundBorder="{DynamicResource PrimaryHueLightBrush}"
+                                            TextName="原点" />
+                                        <control:IOButton
+                                            Margin="3"
+                                            Enable="{Binding MotorService.MotorEnable}"
+                                            EnableBrush="{DynamicResource PrimaryHueLightBrush}"
+                                            FontSize="16"
+                                            RoundBorder="{DynamicResource PrimaryHueLightBrush}"
+                                            TextName="使能" />
+                                    </UniformGrid>
+                                </GroupBox>
+
+                            </Border>
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Margin="3"
+                                BorderBrush="{DynamicResource PrimaryHueLightBrush}"
+                                BorderThickness="2"
+                                CornerRadius="5">
+                                <GroupBox BorderThickness="0">
+                                    <GroupBox.Header>
+                                        <TextBlock Foreground="White" Text="{DynamicResource 运动状态}" />
+                                    </GroupBox.Header>
+                                    <UniformGrid Columns="2">
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Text="{DynamicResource 状态}" />
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Text="{Binding MotorService.MotorOperatingState, Converter={StaticResource MotoSta}}" />
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Text="{DynamicResource 位置}" />
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Text="{Binding MotorService.CurrentPositionOfMotor, StringFormat=F2}" />
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Text="{DynamicResource 速度}" />
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Text="{Binding MotorService.CurrentMotorSpeed, StringFormat=F2}" />
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Text="{DynamicResource 转矩}" />
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Text="{Binding MotorService.CurrentTorqueOfTheMotor, StringFormat=F2}" />
+
+                                    </UniformGrid>
+                                </GroupBox>
+                            </Border>
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="3"
+                                BorderBrush="{DynamicResource PrimaryHueLightBrush}"
+                                BorderThickness="2"
+                                CornerRadius="5">
+                                <materialDesign:DialogHost>
+                                    <GroupBox BorderThickness="0">
+                                        <GroupBox.Header>
+                                            <TextBlock Foreground="White" Text="{DynamicResource 电机操作}" />
+                                        </GroupBox.Header>
+
+                                        <UniformGrid Columns="2">
+
+                                            <TextBlock VerticalAlignment="Center">
+                                                <TextBlock.Text>
+                                                    <MultiBinding FallbackValue="未选定                    " StringFormat="{}{1}:  {0}">
+                                                        <Binding ElementName="MotorPosGrid" Path="SelectedValue.posName" />
+                                                        <Binding ElementName="ResourceMap" Path="Text" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+
+
+
+                                            <Button
+                                                Command="{Binding PosMoveActionCommand}"
+                                                Content="{DynamicResource 点位移动}"
+                                                Foreground="White" />
+
+
+                                            <DockPanel>
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Text="{DynamicResource 相对移动}" />
+                                                <TextBlock
+                                                    x:Name="ResourceMap"
+                                                    Text="{DynamicResource 当前选择点位}"
+                                                    Visibility="Collapsed" />
+                                                <TextBox Name="RelativeInputField" Height="{Binding ElementName=absMove, Path=Height}" />
+                                            </DockPanel>
+
+                                            <UniformGrid Rows="1">
+                                                <Button
+                                                    Margin="5"
+                                                    Command="{Binding AddMoveCommand}"
+                                                    CommandParameter="{Binding ElementName=RelativeInputField, Path=Text, Converter={StaticResource StringToDouble}}"
+                                                    Content="+"
+                                                    Foreground="White" />
+                                                <Button
+                                                    Margin="5"
+                                                    Command="{Binding SubMoveCommand}"
+                                                    CommandParameter="{Binding ElementName=RelativeInputField, Path=Text,Converter={StaticResource StringToDouble}}"
+                                                    Content="-"
+                                                    Foreground="White" />
+                                            </UniformGrid>
+                                            <TextBox Name="absText" Height="{Binding ElementName=absMove, Path=Height}" />
+
+                                            <Button
+                                                Name="absMove"
+                                                Command="{Binding AbsMoveCommand}"
+                                                CommandParameter="{Binding ElementName=absText, Path=Text, Converter={StaticResource StringToDouble}}"
+                                                Content="{DynamicResource 绝对移动}"
+                                                Foreground="White" />
+
+                                        </UniformGrid>
+
+
+
+                                    </GroupBox>
+                                </materialDesign:DialogHost>
+
+                            </Border>
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                Margin="3"
+                                BorderBrush="{DynamicResource PrimaryHueLightBrush}"
+                                BorderThickness="2"
+                                CornerRadius="5">
+                                <GroupBox BorderThickness="0">
+                                    <GroupBox.Header>
+                                        <TextBlock Foreground="White" Text="{DynamicResource 电机控制}" />
+                                    </GroupBox.Header>
+                                    <UniformGrid Columns="1">
+                                        <Button
+                                            Command="{Binding SearchOriginCommand}"
+                                            Content="{DynamicResource 搜索原点}"
+                                            Foreground="White" />
+                                        <Button
+                                            Command="{Binding OpenSpeedCommand}"
+                                            Content="{DynamicResource 速度参数}"
+                                            Foreground="White" />
+                                        <Button
+                                            Command="{Binding EnableCommand}"
+                                            Content="{DynamicResource 使能}"
+                                            Foreground="White" />
+                                        <Button
+                                            Command="{Binding StopCommand}"
+                                            Content="{DynamicResource 停止}"
+                                            Foreground="White" />
+                                        <Button
+                                            Command="{Binding ResettingCommand}"
+                                            Content="{DynamicResource 复位}"
+                                            Foreground="White" />
+                                    </UniformGrid>
+                                </GroupBox>
+                            </Border>
+
+                        </Grid>
+
+                    </TabItem>
+                </TabControl>
+            </materialDesign:Card>
+
+        </Grid>
+    </materialDesign:DialogHost>
+</UserControl>

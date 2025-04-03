@@ -1,0 +1,636 @@
+﻿<Window
+    x:Class="WPFMachine.Views.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:custommarkupextension="clr-namespace:WPFMachine.Views.Control.CustomMarkupExtension"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:machine="clr-namespace:Machine"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:page="clr-namespace:WPFMachine.Page"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:user="clr-namespace:WPFMachine.Frame.Userlib"
+    xmlns:viewmodule="clr-namespace:WPFMachine.ViewModels"
+    Name="WindowsHome"
+    Title="MainWindow"
+    Width="1000"
+    Height="650"
+    d:DataContext="{d:DesignInstance Type=viewmodule:MainWindowViewModel}"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    AllowsTransparency="True"
+    Background="Transparent"
+    Closing="Window_Closing"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen"
+    WindowState="Normal"
+    WindowStyle="None"
+    mc:Ignorable="d">
+    <Border Background="{DynamicResource PrimaryBackgroundColor}" CornerRadius="8">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="377*" />
+                <ColumnDefinition Width="123*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <!--  顶部内容  -->
+            <Grid
+                Name="Menu_Base"
+                Grid.Row="0"
+                Grid.ColumnSpan="2"
+                MouseLeftButtonDown="Menu_Base_MouseLeftButtonDown">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RenderTransform>
+                    <TranslateTransform X="0" Y="-100" />
+                </Grid.RenderTransform>
+
+                <Grid.Triggers>
+                    <EventTrigger RoutedEvent="Grid.Loaded">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation
+                                    BeginTime="0:0:0.4"
+                                    Storyboard.TargetName="Menu_Base"
+                                    Storyboard.TargetProperty="RenderTransform.(TranslateTransform.Y)"
+                                    From="-100"
+                                    To="0"
+                                    Duration="0:0:1.5">
+
+                                    <DoubleAnimation.EasingFunction>
+                                        <CubicEase EasingMode="EaseIn" />
+                                    </DoubleAnimation.EasingFunction>
+
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Grid.Triggers>
+                <!--  logo图片  -->
+                <Border
+                    Grid.RowSpan="2"
+                    Grid.ColumnSpan="1"
+                    Width="180"
+                    Margin="10,5,10,5"
+                    CornerRadius="10">
+                    <Border.Background>
+                        <ImageBrush ImageSource="../Image/Machine.png" Stretch="Fill" />
+                    </Border.Background>
+                </Border>
+                <!--  启动停止复位整机重置  -->
+
+                <RadioButton
+                    x:Name="rdStart"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Margin="10,0,0,10"
+                    Command="{Binding StartCommand}"
+                    Content="启动"
+                    Style="{DynamicResource TopRadioButtonStyle}"
+                    Tag="{DynamicResource startSet}" />
+                <RadioButton
+                    x:Name="rdStop"
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Margin="0,0,0,10"
+                    Command="{Binding StopCommand}"
+                    Content="停止"
+                    Style="{DynamicResource TopRadioButtonStyle}"
+                    Tag="{DynamicResource stopSet}" />
+                <RadioButton
+                    x:Name="rdResert"
+                    Grid.Row="1"
+                    Grid.Column="3"
+                    Margin="0,0,0,10"
+                    Command="{Binding ResettingCommand}"
+                    Content="复位"
+                    Style="{DynamicResource TopRadioButtonStyle}"
+                    Tag="{DynamicResource ResertSet}" />
+                <RadioButton
+                    x:Name="rdClear"
+                    Grid.Row="1"
+                    Grid.Column="4"
+                    Margin="0,0,0,10"
+                    Command="{Binding ResetCommand}"
+                    Content="整机重置"
+                    IsEnabled="{custommarkupextension:UserLimitsOfAuthorityBind 整机重置}"
+                    Style="{DynamicResource TopRadioButtonStyle}"
+                    Tag="{DynamicResource ClearSet}" />
+
+                <!--  初始化和报警信息显示  -->
+                <!--  made in wpp  -->
+                <Border
+                    x:Name="logoBorder"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="4"
+                    Width="600"
+                    Height="25"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Background="{Binding ElementName=LogoText, Path=Tag}"
+                    CornerRadius="10">
+                    <TextBlock
+                        x:Name="LogoText"
+                        Margin="5,1,5,1"
+                        Padding="2"
+                        FontSize="14"
+                        Foreground="White"
+                        Style="{DynamicResource MainTextBlock}"
+                        TextAlignment="Left">
+                        <TextBlock.RenderTransform>
+                            <TranslateTransform Y="0" />
+                        </TextBlock.RenderTransform>
+                        <TextBlock.Triggers>
+                            <EventTrigger RoutedEvent="Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            BeginTime="0:0:0"
+                                            RepeatBehavior="Forever"
+                                            Storyboard.TargetName="LogoText"
+                                            Storyboard.TargetProperty="RenderTransform.X"
+                                            From="570"
+                                            To="0"
+                                            Duration="0:0:6.6" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </TextBlock.Triggers>
+
+                    </TextBlock>
+                </Border>
+
+                <!--  最大最小化和关闭  -->
+                <StackPanel
+                    Grid.Column="5"
+                    Height="30"
+                    Margin="0,5,10,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    FlowDirection="RightToLeft"
+                    Orientation="Horizontal">
+                    <Button
+                        x:Name="btnClose"
+                        Click="btnClose_Click"
+                        Content="{DynamicResource close}"
+                        IsEnabled="{custommarkupextension:UserLimitsOfAuthorityBind 关闭}"
+                        Style="{StaticResource IconButtonsStyle}"
+                        Tag="IsCloseButton" />
+                    <Button
+                        x:Name="btnRestore"
+                        Margin="5,0,5,0"
+                        Click="btnRestore_Click">
+                        <Button.Style>
+                            <Style BasedOn="{StaticResource IconButtonsStyle}" TargetType="{x:Type Button}">
+                                <Setter Property="Content" Value="{DynamicResource maximize}" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=WindowsHome, Path=WindowState}" Value="Maximized">
+                                        <Setter Property="Content" Value="{DynamicResource restore}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <Button
+                        x:Name="btnMinimize"
+                        Margin="0,0,15,0"
+                        Click="btnMinimize_Click"
+                        Content="{DynamicResource minimize}"
+                        Style="{DynamicResource IconButtonsStyle}" />
+                </StackPanel>
+                <!--  右边的启动动画效果  -->
+                <!--  测试重新启动  -->
+                <!--<Button
+                    Grid.Row="1"
+                    Grid.Column="5"
+                    Margin="0,5,30,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Background="{DynamicResource PrimaryBlueColor}"
+                    Content="重启软件"
+                    Foreground="White" />-->
+            </Grid>
+            <!--  下部内容  -->
+            <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <!--  左边的导航 和动画  -->
+                <Border
+                    x:Name="Menu_Status"
+                    Background="{DynamicResource SecundaryBackgroundColor}"
+                    CornerRadius="8 0 0 8">
+                    <Border.RenderTransform>
+
+                        <TranslateTransform X="-60" Y="0" />
+
+                    </Border.RenderTransform>
+                    <Border.Triggers>
+                        <EventTrigger RoutedEvent="Border.Loaded">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation
+                                        BeginTime="0:0:0.4"
+                                        Storyboard.TargetName="Menu_Status"
+                                        Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)"
+                                        From="-200"
+                                        To="0"
+                                        Duration="0:0:1.5" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Border.Triggers>
+                    <Grid x:Name="gridMenu" Width="60">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="80" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <!--  下拉菜单内容  -->
+                        <StackPanel
+                            Grid.Row="0"
+                            Margin="0,0,15,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            FlowDirection="RightToLeft"
+                            Orientation="Horizontal">
+                            <ToggleButton
+                                x:Name="btnMenu"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Style="{StaticResource MenuIconStyle}">
+
+                                <ToggleButton.Triggers>
+                                    <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                                        <BeginStoryboard>
+                                            <Storyboard x:Name="HideStackPanel">
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="raNameToolTip" Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:.3" Value="{x:Static Visibility.Visible}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="raJianshiToolTip" Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:.3" Value="{x:Static Visibility.Visible}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="raWeihuToolTip" Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:.3" Value="{x:Static Visibility.Visible}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="raTestToolTip" Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:.3" Value="{x:Static Visibility.Visible}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="raParamaterToolTip" Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:.3" Value="{x:Static Visibility.Visible}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="raMesSettToolTip" Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:.3" Value="{x:Static Visibility.Visible}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="raHistoryToolTip" Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:.3" Value="{x:Static Visibility.Visible}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="raqaunxianToolTip" Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:.3" Value="{x:Static Visibility.Visible}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="nameTextBlock" Storyboard.TargetProperty="VerticalAlignment">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:.3" Value="{x:Static VerticalAlignment.Top}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="nameTextBlock" Storyboard.TargetProperty="HorizontalAlignment">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:.3" Value="{x:Static HorizontalAlignment.Center}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <DoubleAnimation
+                                                    BeginTime="0:0:0"
+                                                    Storyboard.TargetName="gridMenu"
+                                                    Storyboard.TargetProperty="Width"
+                                                    From="200"
+                                                    To="60"
+                                                    Duration="0:0:0.3" />
+                                                <DoubleAnimation
+                                                    BeginTime="0:0:0"
+                                                    Storyboard.TargetName="loginWrap"
+                                                    Storyboard.TargetProperty="Width"
+                                                    From="200"
+                                                    To="60"
+                                                    Duration="0:0:0.3" />
+                                                <DoubleAnimation
+                                                    BeginTime="0:0:0"
+                                                    Storyboard.TargetName="loginWrap"
+                                                    Storyboard.TargetProperty="Height"
+                                                    From="60"
+                                                    To="120"
+                                                    Duration="0:0:0.3" />
+                                                <DoubleAnimation
+                                                    BeginTime="0:0:0"
+                                                    Storyboard.TargetName="nameText"
+                                                    Storyboard.TargetProperty="Width"
+                                                    From="140"
+                                                    To="60"
+                                                    Duration="0:0:0.3" />
+                                                <DoubleAnimation
+                                                    BeginTime="0:0:0"
+                                                    Storyboard.TargetName="nameText"
+                                                    Storyboard.TargetProperty="Height"
+                                                    From="50"
+                                                    To="120"
+                                                    Duration="0:0:0.3" />
+
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                    <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                        <BeginStoryboard>
+                                            <Storyboard x:Name="ShowStackPanel">
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="raNameToolTip" Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:.3" Value="{x:Static Visibility.Collapsed}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="raJianshiToolTip" Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:.3" Value="{x:Static Visibility.Collapsed}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="raWeihuToolTip" Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:.3" Value="{x:Static Visibility.Collapsed}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="raTestToolTip" Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:.3" Value="{x:Static Visibility.Collapsed}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="raParamaterToolTip" Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:.3" Value="{x:Static Visibility.Collapsed}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="raMesSettToolTip" Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:.3" Value="{x:Static Visibility.Collapsed}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="raHistoryToolTip" Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:.3" Value="{x:Static Visibility.Collapsed}" />
+                                                </ObjectAnimationUsingKeyFrames>
+
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="raqaunxianToolTip" Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:.3" Value="{x:Static Visibility.Collapsed}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="nameTextBlock" Storyboard.TargetProperty="VerticalAlignment">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:.3" Value="{x:Static VerticalAlignment.Center}" />
+
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="nameTextBlock" Storyboard.TargetProperty="HorizontalAlignment">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:.3" Value="{x:Static HorizontalAlignment.Center}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <DoubleAnimation
+                                                    BeginTime="0:0:0"
+                                                    Storyboard.TargetName="gridMenu"
+                                                    Storyboard.TargetProperty="Width"
+                                                    From="60"
+                                                    To="200"
+                                                    Duration="0:0:0.3" />
+                                                <DoubleAnimation
+                                                    BeginTime="0:0:0"
+                                                    Storyboard.TargetName="loginWrap"
+                                                    Storyboard.TargetProperty="Width"
+                                                    From="60"
+                                                    To="200"
+                                                    Duration="0:0:0.3" />
+                                                <DoubleAnimation
+                                                    BeginTime="0:0:0"
+                                                    Storyboard.TargetName="loginWrap"
+                                                    Storyboard.TargetProperty="Height"
+                                                    From="120"
+                                                    To="60"
+                                                    Duration="0:0:0.3" />
+
+                                                <DoubleAnimation
+                                                    BeginTime="0:0:0"
+                                                    Storyboard.TargetName="nameText"
+                                                    Storyboard.TargetProperty="Width"
+                                                    From="60"
+                                                    To="140"
+                                                    Duration="0:0:0.3" />
+                                                <DoubleAnimation
+                                                    BeginTime="0:0:0"
+                                                    Storyboard.TargetName="nameText"
+                                                    Storyboard.TargetProperty="Height"
+                                                    From="120"
+                                                    To="50"
+                                                    Duration="0:0:0.3" />
+                                            </Storyboard>
+
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </ToggleButton.Triggers>
+                            </ToggleButton>
+                            <!--  字体  -->
+                            <TextBlock
+                                Margin="25,0,0,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                FontSize="30"
+                                Foreground="#943f96"
+                                Text="u"
+                                TextAlignment="Center" />
+                            <TextBlock
+                                Margin="8,0,0,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                FontSize="30"
+                                Foreground="#f58122"
+                                Text="n"
+                                TextAlignment="Center" />
+
+                            <TextBlock
+                                Margin="8,0,0,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                FontSize="30"
+                                Foreground="#f7b423"
+                                Text="e"
+                                TextAlignment="Center" />
+                            <TextBlock
+                                Margin="8,0,0,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                FontSize="30"
+                                Foreground="#65b849"
+                                Text="M"
+                                TextAlignment="Center" />
+                        </StackPanel>
+
+                        <!--  MENU  -->
+                        <StackPanel Grid.Row="1">
+                            <RadioButton
+                                x:Name="rdHome"
+                                Command="{Binding NavigationCommand}"
+                                CommandParameter="AnimatedInterface"
+                                Content="动画界面"
+                                IsChecked="True"
+                                Style="{DynamicResource MenuRadioButtonStyle}"
+                                Tag="{DynamicResource home}">
+                                <RadioButton.ToolTip>
+                                    <ToolTip x:Name="raNameToolTip" Style="{StaticResource tt_style}">
+                                        动画界面
+                                    </ToolTip>
+                                </RadioButton.ToolTip>
+                            </RadioButton>
+
+                            <RadioButton
+                                x:Name="rdSounds"
+                                Margin="0,5,0,5"
+                                Command="{Binding NavigationCommand}"
+                                CommandParameter="MonitoringInterface"
+                                Content="监视界面"
+                                Style="{DynamicResource MenuRadioButtonStyle}"
+                                Tag="{DynamicResource jianshi}">
+                                <RadioButton.ToolTip>
+                                    <ToolTip x:Name="raJianshiToolTip" Style="{StaticResource tt_style}">
+                                        监视界面
+                                    </ToolTip>
+                                </RadioButton.ToolTip>
+                            </RadioButton>
+                            <RadioButton
+                                x:Name="rdNotes"
+                                Command="{Binding NavigationCommand}"
+                                CommandParameter="Maintenanceinterface"
+                                Content="维护界面"
+                                Style="{DynamicResource MenuRadioButtonStyle}"
+                                Tag="{DynamicResource weihu}">
+                                <RadioButton.ToolTip>
+                                    <ToolTip x:Name="raWeihuToolTip" Style="{StaticResource tt_style}">
+                                        维护界面
+                                    </ToolTip>
+                                </RadioButton.ToolTip>
+                            </RadioButton>
+
+                            <RadioButton
+                                x:Name="rdPayment"
+                                Margin="0,5,0,5"
+                                Command="{Binding NavigationCommand}"
+                                CommandParameter="ParameterSetting"
+                                Content="参数设置"
+                                Style="{DynamicResource MenuRadioButtonStyle}"
+                                Tag="{DynamicResource paramaterSet}">
+                                <RadioButton.ToolTip>
+                                    <ToolTip x:Name="raParamaterToolTip" Style="{StaticResource tt_style}">
+                                        参数设置
+                                    </ToolTip>
+                                </RadioButton.ToolTip>
+                            </RadioButton>
+
+                            <RadioButton
+                                x:Name="rdHome1"
+                                Command="{Binding NavigationCommand}"
+                                CommandParameter="DebuggingTool"
+                                Content="调试工具"
+                                Style="{DynamicResource MenuRadioButtonStyle}"
+                                Tag="{DynamicResource test}">
+                                <RadioButton.ToolTip>
+                                    <ToolTip x:Name="raTestToolTip" Style="{StaticResource tt_style}">
+                                        调试工具
+                                    </ToolTip>
+                                </RadioButton.ToolTip>
+                            </RadioButton>
+                            <RadioButton
+                                x:Name="rdSounds1"
+                                Margin="0,5,0,5"
+                                Command="{Binding NavigationCommand}"
+                                CommandParameter="MesInterface"
+                                Content="MES界面"
+                                Style="{DynamicResource MenuRadioButtonStyle}"
+                                Tag="{DynamicResource mesSet}">
+                                <RadioButton.ToolTip>
+                                    <ToolTip x:Name="raMesSettToolTip" Style="{StaticResource tt_style}">
+                                        MES界面
+                                    </ToolTip>
+                                </RadioButton.ToolTip>
+                            </RadioButton>
+                            <RadioButton
+                                x:Name="rdNotes1"
+                                Command="{Binding NavigationCommand}"
+                                CommandParameter="HistoricalRecord"
+                                Content="历史记录"
+                                Style="{DynamicResource MenuRadioButtonStyle}"
+                                Tag="{DynamicResource historySet}">
+                                <RadioButton.ToolTip>
+                                    <ToolTip x:Name="raHistoryToolTip" Style="{StaticResource tt_style}">
+                                        历史记录
+                                    </ToolTip>
+                                </RadioButton.ToolTip>
+                            </RadioButton>
+                            <RadioButton
+                                x:Name="rdPayment1"
+                                Margin="0,5,0,5"
+                                Command="{Binding NavigationCommand}"
+                                CommandParameter="AuthorityManagement"
+                                Content="用户管理"
+                                Style="{DynamicResource MenuRadioButtonStyle}"
+                                Tag="{DynamicResource qaunxianSet}"
+                                Visibility="{Binding IsClera, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                                <RadioButton.ToolTip>
+                                    <ToolTip x:Name="raqaunxianToolTip" Style="{StaticResource tt_style}">
+                                        用户管理
+                                    </ToolTip>
+                                </RadioButton.ToolTip>
+                            </RadioButton>
+                        </StackPanel>
+
+                        <!--  用户登录  -->
+                        <WrapPanel
+                            Name="loginWrap"
+                            Grid.Row="2"
+                            Width="60"
+                            Height="100"
+                            Margin="0,0,0,5"
+                            VerticalAlignment="Bottom"
+                            Background="{DynamicResource PrimaryBlueColor}">
+                            <Button
+                                Name="loginBtn"
+                                Width="60"
+                                Height="60"
+                                Command="{Binding OpenLogInCommand}"
+                                Style="{StaticResource loginBtnStyle}" />
+                            <Grid
+                                Name="nameText"
+                                Width="60"
+                                Height="60">
+                                <TextBlock
+                                    x:Name="nameTextBlock"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Top"
+                                    Foreground="White"
+                                    Text="{Binding Source={x:Static machine:MachineCtrl.MachineCtrlInstance}, Path=UserName, UpdateSourceTrigger=PropertyChanged}"
+                                    TextWrapping="Wrap" />
+                            </Grid>
+
+                        </WrapPanel>
+
+                    </Grid>
+                </Border>
+
+                <!--  右边的内容页  -->
+                <Grid Grid.Row="1" Grid.Column="1">
+                    <Border Margin="6,0,0,0">
+                        <ContentControl prism:RegionManager.RegionName="{x:Static page:RegionName.MainRegion}" />
+                    </Border>
+                </Grid>
+            </Grid>
+            <!--  登录页  -->
+            <materialDesign:DialogHost
+                Grid.Row="0"
+                Grid.RowSpan="999"
+                Grid.Column="0"
+                Grid.ColumnSpan="999"
+                HorizontalAlignment="Stretch"
+                Identifier="MainDialog" />
+        </Grid>
+    </Border>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="MouseMove">
+            <prism:InvokeCommandAction Command="{Binding MouseMoveCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+</Window>

@@ -1,0 +1,121 @@
+﻿<UserControl
+    x:Class="WPFMachine.Views.Control.CavityDataView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:WPFMachine.Views.Control"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:views="clr-namespace:WPFMachine.Views"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <UserControl.Template>
+        <ControlTemplate TargetType="local:CavityDataView">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1.7*" />
+                    <RowDefinition Height="0.1*" />
+                    <RowDefinition Height="9*" />
+                </Grid.RowDefinitions>
+                <Label
+                    Grid.Row="0"
+                    HorizontalContentAlignment="Center"
+                    Content="{Binding RealTimeData.UnWorkTime}" />
+                <Border
+                    Name="OvenCavity1"
+                    Grid.Row="2"
+                    Style="{DynamicResource OvenState}">
+                    <local:CollectionPallet Plts="{TemplateBinding Plts}" />
+                </Border>
+
+                <Border
+                    x:Name="Door"
+                    Grid.Row="1"
+                    Grid.RowSpan="2"
+                    BorderBrush="Black"
+                    BorderThickness="1.2"
+                    Opacity="1"
+                    Style="{DynamicResource OvenDoorStyle}" />
+                <Border
+                    x:Name="OvenEnable"
+                    Grid.Row="1"
+                    Grid.RowSpan="2"
+                    Style="{DynamicResource OvenEnableStyle}">
+                    <Path
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Data="{DynamicResource lock}"
+                        Stroke="Black"
+                        StrokeThickness="3"
+                        Style="{DynamicResource OvenEnablelockStyle}" />
+                </Border>
+                <Border
+                    x:Name="OvenPressurize"
+                    Grid.Row="1"
+                    Grid.RowSpan="2"
+                    Margin="1"
+                    Style="{DynamicResource OvenPressurizeStyle}">
+                    <Path
+                        Grid.Row="1"
+                        Grid.RowSpan="2"
+                        Margin="9"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Data="{DynamicResource pressurize}"
+                        Fill="Black"
+                        Stroke="Black"
+                        Style="{DynamicResource OvenPressurizeStylePath}" />
+                </Border>
+
+
+                <!--<Canvas
+                        Grid.Row="0"
+                        Grid.RowSpan="10"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="10"
+                        Visibility="{TemplateBinding Disable}">
+                        <Line
+                            Stroke="{DynamicResource PrimaryHueMidBrush}"
+                            StrokeThickness="2"
+                            X1="0"
+                            X2="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Mode=OneWay, Path=ActualWidth}"
+                            Y1="0"
+                            Y2="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Mode=OneWay, Path=ActualHeight}" />
+                        <Line
+                            Stroke="{DynamicResource PrimaryHueMidBrush}"
+                            StrokeThickness="2"
+                            X1="0"
+                            X2="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Mode=OneWay, Path=ActualWidth}"
+                            Y1="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Mode=OneWay, Path=ActualHeight}"
+                            Y2="0" />
+                    </Canvas>
+
+                    <Canvas
+                        Grid.Row="0"
+                        Grid.RowSpan="10"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="10"
+                        Visibility="{TemplateBinding PressureVisi}">
+                        <Line
+                            Stroke="{DynamicResource PrimaryHueMidBrush}"
+                            StrokeThickness="2"
+                            X1="0"
+                            X2="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Mode=OneWay, Path=ActualWidth}"
+                            Y1="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Mode=OneWay, Path=ActualHeight, Converter={StaticResource Magnification3_1}}"
+                            Y2="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Mode=OneWay, Path=ActualHeight, Converter={StaticResource Magnification3_1}}" />
+                        <Line
+                            Stroke="{DynamicResource PrimaryHueMidBrush}"
+                            StrokeThickness="2"
+                            X1="0"
+                            X2="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Mode=OneWay, Path=ActualWidth}"
+                            Y1="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Mode=OneWay, Path=ActualHeight, Converter={StaticResource Magnification3_2}}"
+                            Y2="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Mode=OneWay, Path=ActualHeight, Converter={StaticResource Magnification3_2}}" />
+                    </Canvas>-->
+
+            </Grid>
+
+
+        </ControlTemplate>
+    </UserControl.Template>
+</UserControl>
